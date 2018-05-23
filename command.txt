@@ -1,0 +1,1 @@
+py -2.7 .\record_position.py "D:\Documents\Minors\Robotarm\Programs\2048\test.txt"
