@@ -12,6 +12,8 @@ template3 = cv2.imread('templates/template_field.png',0)
 template4 = cv2.imread('templates/template_8_big.png',0)
 template5 = cv2.imread('templates/template_16_big.png',0)
 
+grid = []
+
 
 
 
@@ -44,14 +46,24 @@ def getField(fieldTemplate):
 
     pt = zip(*loc[::-1])[0]
 
+    
     print(blockWidth, blockHeigth)
     for x in range(1,5):
         for y in range (1,5):
-            cv2.rectangle(img_rgb , pt , (pt[0] + (blockWidth * x)  , pt[1] + (blockHeigth * y)), (125,125,125) , 2)
+            #grid.append(pt)
+            grid.append((pt ,(pt[0] + (blockWidth * x), pt[1] + (blockHeigth * y))))
+            #cv2.rectangle(img_rgb , pt , (pt[0] + (blockWidth * x)  , pt[1] + (blockHeigth * y)), (125,125,125) , 2)
 
-
+    print(grid)
+    drawGrid(grid,blockWidth, blockHeigth)
         
 
+def drawGrid(grid, blockWidth, blockHeigth):
+    for pt in grid:
+        #cv2.rectangle(img_rgb,pt, ( pt[0] + blockWidth  , pt[1] +blockHeigth ), (0,0,0), 2)
+        cv2.rectangle(img_rgb,pt[0], pt[1], (0,0,0), 2)
+    
+    
 
 
 
