@@ -9,7 +9,6 @@ def init_game():
     Game.board = zeros((4, 4), dtype=np.int)
     game_logic.score = 0
     game_logic.fill_cell(Game.board)
-    print Game.board
 
 def move(direction):
     Game.board = game_logic.main_loop(Game.board,direction)[1]
@@ -23,16 +22,15 @@ def smart_move():
     move = ai2.smart_boi(Game.board,5)
     if(move != -1):
         state = game_logic.main_loop(Game.board,move)
-        score = state[2]
         Game.board = state[1]
-        print Game.board
-        print score
-    else:
+    else:        
         return -1
         
 def auto_smart_move():
     init_game()
     while smart_move() != -1:
         smart_move()
+    print Game.board
+    print game_logic.score
     print("Game over!")
     return
