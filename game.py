@@ -12,6 +12,7 @@ def move(direction):
     print Game.board
 
 def random():
+    game_logic.score = 0
     ai.auto_random(Game.board,250)
 
 def smart_move():
