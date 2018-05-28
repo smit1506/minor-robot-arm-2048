@@ -1,9 +1,13 @@
+import numpy as np
+from numpy import zeros
 import game_logic
 import ai
 import ai2
 Game = game_logic.Board_game_2048()
 
 def init_game():
+    Game.board = zeros((4, 4), dtype=np.int)
+    game_logic.score = 0
     game_logic.fill_cell(Game.board)
     print Game.board
 
@@ -12,7 +16,7 @@ def move(direction):
     print Game.board
 
 def random():
-    game_logic.score = 0
+    init_game()
     ai.auto_random(Game.board,250)
 
 def smart_move():

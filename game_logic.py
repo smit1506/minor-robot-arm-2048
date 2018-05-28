@@ -62,5 +62,4 @@ def main_loop(board, direction):
     else:
         moved = True
         fill_cell(new_board)
-        
     return (moved, new_board, score)
