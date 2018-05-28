@@ -1,14 +1,14 @@
 import urx
 from time import sleep
-from robotControls import record_position # why was this here?
-from robotVision import vision
+from robot_controls import robot_positions
+from robot_vision import vision
 
 #rob = urx.Robot("192.168.1.101")
 #print("Connected")
 
 sleep(0.2)  #leave some time to robot to process the setup commands
 
-positions = record_position.recordposition("D:/Documents/Minors/Robotarm/Programs/2048/robotControls/positions.txt")
+positions = robot_positions.positions("D:/Documents/Minors/Robotarm/Programs/2048/robot_controls/positions.txt")
 
 board = None
 
@@ -33,7 +33,7 @@ def doMove(direction):
 def getDirection():
     board = vision.updateBoard()
     print board
-    # give board to AI to get next move
+    # return ai.getMove(board)
 
 getDirection()
 print("Done")
