@@ -21,9 +21,18 @@ def random():
 
 def smart_move():
     move = ai2.smart_boi(Game.board,5)
-    Game.board = game_logic.main_loop(Game.board,move)[1]
-    print Game.board
-
+    if(move != -1):
+        state = game_logic.main_loop(Game.board,move)
+        score = state[2]
+        Game.board = state[1]
+        print Game.board
+        print score
+    else:
+        return -1
+        
 def auto_smart_move():
-    for x in range(0, 1000):
+    init_game()
+    while smart_move() != -1:
         smart_move()
+    print("Game over!")
+    return

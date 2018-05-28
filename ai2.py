@@ -5,6 +5,7 @@ def smart_boi(board, depth):
     best_move = 0
     false_counter = 0
     weight_board = [[6, 5, 4, 3], [5, 4, 3, 2], [4, 3, 2, 1], [3, 2, 1, 0]]
+
     for i in range(0, 3):
         if(game_logic.main_loop(board,i)[0] == True):
             temp_board = game_logic.main_loop(board,i)[1]
@@ -18,8 +19,6 @@ def smart_boi(board, depth):
         else:
             false_counter = (false_counter+1)
             if(false_counter == 3):
-                print("game over, with "+str(moves)+" moves")
-                print(board)
-                return
+                return-1
         
     return best_move
