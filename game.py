@@ -29,7 +29,7 @@ def smart_move():
 def auto_smart_move():
     init_game()
     while smart_move() != -1:
-        smart_move()
+        continue
     print Game.board
     print game_logic.score
     print("Game over!")
