@@ -4,13 +4,24 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-img_rgb = cv2.imread('test9.jpg')
-img_gray = img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+img_rgb = None
+img_gray = None
 template_path = 'templates'
 tile_path = template_path + '/tiles'
-tiles = os.listdir(tile_path)
-
 tile_info = [((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16)]
+
+grid = []
+board = [0] * 16
+
+def init():
+    img_rgb = cv2.imread('test9.jpg')
+    img_gray = img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    tiles = os.listdir(tile_path)
+
+def updateBoard():
+    # get matches and put them on board list
+    return board
+
 def getAllMatches():
     index = 0
     for tile in tiles:
@@ -18,10 +29,6 @@ def getAllMatches():
        #unpacks tile info at index and passes values as arguments
        getMatches(tile_template, *tile_info[index])
        index += 1
-
-grid = []
-board = [0] * 16
-
 
 
 
@@ -93,5 +100,5 @@ def printBoard(board):
 
 # printBoard(board)
 
-getAllMatches()
-cv2.imwrite('res.png',img_rgb)
+#getAllMatches()
+#cv2.imwrite('res.png',img_rgb)
