@@ -37,9 +37,10 @@ class positions:
 
 if __name__ == "__main__":
     #py -2.7 .\record_position.py "C:\Users\Mark Snijder\PycharmProjects\Robista\test.txt"
-    rec = recordposition(sys.argv[1])
+    #rec = positions(sys.argv[1])
+    rec = positions("D:/Documents/Minors/Robotarm/Programs/2048/robot_controls/positions.txt")
 
-    rob = urx.Robot("192.168.1.101")
+    rob = urx.Robot("141.252.128.7")
     sleep(0.2)  #leave some time to robot to process the setup commands
 
     while(True):
