@@ -18,6 +18,9 @@ def random():
     init_game()
     ai.auto_random(Game.board,250)
 
+def depth():
+    auto_depth(board,50)
+
 def smart_move():
     move = ai2.smart_boi(Game.board,5)
     if(move != -1):
