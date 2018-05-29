@@ -3,7 +3,7 @@ import sys
 from time import sleep
 
 
-class recordposition:
+class positions:
 
     def __init__(self, filePath):
         print("Attempting to open: " + filePath)

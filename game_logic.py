@@ -13,6 +13,8 @@ class Board_game_2048():
     def is_game_over(self):
         pass
 
+score = 0
+
 def fill_cell(board):
     i, j = (board == 0).nonzero()
     if i.size != 0:
@@ -29,6 +31,8 @@ def move(board, direction):
 def move_left(col):
     new_col = zeros((4), dtype=col.dtype)
     j = 0
+    global score
+    new_score = score
     previous = None
     for i in range(col.size):
         if col[i] != 0:
@@ -37,6 +41,7 @@ def move_left(col):
             else:
                 if previous == col[i]:
                     new_col[j] = 2 * col[i]
+                    new_score = score + new_col[j]
                     j += 1
                     previous = None
                 else:
@@ -45,6 +50,7 @@ def move_left(col):
                     previous = col[i]
     if previous != None:
         new_col[j] = previous
+    score = new_score
     return new_col
 
 def main_loop(board, direction):
@@ -56,5 +62,4 @@ def main_loop(board, direction):
     else:
         moved = True
         fill_cell(new_board)
-        
-    return (moved, new_board)
+    return (moved, new_board, score)
