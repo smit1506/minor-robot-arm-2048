@@ -1,8 +1,8 @@
 import numpy as np
 from numpy import zeros
 import game_logic
-import ai
-import ai2
+import monte_carlo
+import weighted_table
 Game = game_logic.Board_game_2048()
 
 def init_game():
@@ -16,13 +16,13 @@ def move(direction):
 
 def random():
     init_game()
-    ai.auto_random(Game.board,250)
+    monte_carlo.auto_random(Game.board,250)
 
 def depth():
-    auto_depth(board,50)
+    monte_carlo.auto_depth(board,50)
 
 def smart_move():
-    move = ai2.smart_boi(Game.board,5)
+    move = weighted_table.smart_boi(Game.board,5)
     if(move != -1):
         state = game_logic.main_loop(Game.board,move)
         Game.board = state[1]

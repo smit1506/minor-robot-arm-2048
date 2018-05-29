@@ -53,6 +53,16 @@ def move_left(col):
     score = new_score
     return new_col
 
+def check_game_over(board):
+    checker = 0
+    game_over = False
+    for i in range(0,4):
+        if (np.array_equal(board,move(board,i))):
+            checker = (checker+1)
+            if checker == 4:
+                game_over = True
+    return game_over
+
 def main_loop(board, direction):
     new_board = move(board, direction)
     moved = False
@@ -62,4 +72,4 @@ def main_loop(board, direction):
     else:
         moved = True
         fill_cell(new_board)
-    return (moved, new_board, score)
+    return (moved, new_board, score, check_game_over(board))
