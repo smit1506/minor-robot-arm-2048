@@ -20,13 +20,12 @@ def init():
     img_rgb = cv2.imread(path + 'test5.jpg')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
-    print tiles
+    getField(cv2.imread(template_path + '/template_field.png',0))
 
 def updateBoard():
     # get matches and put them on board list
     getAllMatches()
-    printBoard(board)
-    return board
+    return normalizeBoard(board)
 
 def getAllMatches():
     index = 0
@@ -98,12 +97,13 @@ def drawGrid(grid):
 
 
 
-def printBoard(board):
+def normalizeBoard(board):
+    result = [[],[],[],[]]
     val = 0;
-    for x in range(1,5):
-        print(board[val],board[val+1],board[val+2],board[val+3])
+    for x in range(0,4):
+        result[x] = [board[val],board[val+1],board[val+2],board[val+3]]
         val += 4;
-
+    return result
 # printBoard(board)
 # init()
 # print updateBoard()

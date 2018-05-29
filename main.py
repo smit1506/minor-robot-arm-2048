@@ -37,6 +37,9 @@ def doMove(direction):
 def getDirection():
     board = vision.updateBoard()
     print board
+    print board
+    print board
+    print board
     return weighted_table.getMove(board)
     # return ai.getMove(board)
 
