@@ -6,7 +6,9 @@ from matplotlib import pyplot as plt
 
 img_rgb = None
 img_gray = None
-template_path = 'templates'
+tiles = None
+path = '' if __name__ == "__main__" else 'robot_vision/'
+template_path = path + 'templates'
 tile_path = template_path + '/tiles'
 tile_info = [((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16)]
 
@@ -14,12 +16,16 @@ grid = []
 board = [0] * 16
 
 def init():
-    img_rgb = cv2.imread('test9.jpg')
-    img_gray = img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    global img_rgb, img_gray, tiles
+    img_rgb = cv2.imread(path + 'test5.jpg')
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
+    print tiles
 
 def updateBoard():
     # get matches and put them on board list
+    getAllMatches()
+    printBoard(board)
     return board
 
 def getAllMatches():
@@ -99,6 +105,7 @@ def printBoard(board):
         val += 4;
 
 # printBoard(board)
-
+# init()
+# print updateBoard()
 #getAllMatches()
-#cv2.imwrite('res.png',img_rgb)
+# cv2.imwrite('res.png',img_rgb)

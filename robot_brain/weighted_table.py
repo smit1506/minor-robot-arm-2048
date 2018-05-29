@@ -1,6 +1,6 @@
 import game_logic
 
-def smart_boi(board, depth):
+def getMove(board, depth=5):
     score = 0
     best_move = 0
     false_counter = 0
@@ -20,5 +20,5 @@ def smart_boi(board, depth):
             false_counter = (false_counter+1)
             if(false_counter == 3):
                 return-1
-        
+
     return best_move
