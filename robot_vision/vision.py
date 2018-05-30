@@ -1,6 +1,7 @@
 #template matching attempt
 import os
 import cv2
+import time
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -19,10 +20,14 @@ board = [0] * 16
 def init():
     global camera, img_rgb, img_gray, tiles
     camera = cv2.VideoCapture(2)
+    time.sleep(1)
     _, img_rgb  = camera.read()
+    # cv2.imshow('frame',img_rgb)
+    # if cv2.waitKey(30000) & 0xFF == ord('q'):
+    #     return
 
-    #img_rgb = cv2.imread(path + 'test5.jpg')
-    #img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    # img_rgb = cv2.imread(path + 'test13.jpg')
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
     fieldTemplate = cv2.imread(template_path + '/template_field.png', 0)
     # cv2.imshow('t', fieldTemplate)
@@ -33,8 +38,8 @@ def init():
 def updateBoard():
     global img_rgb, img_gray
     # get matches and put them on board list
-    img_rgb = cv2.imread('test13.jpg')
-    # _, img_rgb  = camera.read()
+    # img_rgb = cv2.imread('test13.jpg')
+    _, img_rgb  = camera.read()
     # cv2.imshow('frame',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):
     #     return
