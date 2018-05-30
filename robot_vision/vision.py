@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
+camera = None
 img_rgb = None
 img_gray = None
 tiles = None
@@ -16,14 +17,29 @@ grid = []
 board = [0] * 16
 
 def init():
-    global img_rgb, img_gray, tiles
-    img_rgb = cv2.imread(path + 'test5.jpg')
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    global camera, img_rgb, img_gray, tiles
+    camera = cv2.VideoCapture(2)
+    _, img_rgb  = camera.read()
+
+    #img_rgb = cv2.imread(path + 'test5.jpg')
+    #img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
-    getField(cv2.imread(template_path + '/template_field.png',0))
+    fieldTemplate = cv2.imread(template_path + '/template_field.png', 0)
+    # cv2.imshow('t', fieldTemplate)
+    # if cv2.waitKey(30000) & 0xFF == ord('q'):
+    #     return
+    getField(fieldTemplate)
 
 def updateBoard():
+    global img_rgb, img_gray
     # get matches and put them on board list
+    img_rgb = cv2.imread('test12.jpg')
+    # _, img_rgb  = camera.read()
+    # cv2.imshow('frame',img_rgb)
+    # if cv2.waitKey(30000) & 0xFF == ord('q'):
+    #     return
+
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     getAllMatches()
     return normalizeBoard(board)
 
@@ -39,6 +55,7 @@ def getAllMatches():
 
 def getMatches(template,color, value):
     w, h = template.shape[::-1]
+
     res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
     threshold = 0.8
     loc = np.where(res >= threshold)
@@ -104,8 +121,13 @@ def normalizeBoard(board):
         result[x] = [board[val],board[val+1],board[val+2],board[val+3]]
         val += 4;
     return result
+
+def releaseCamera():
+    camera.realease()
+
 # printBoard(board)
-# init()
+init()
 # print updateBoard()
 #getAllMatches()
-# cv2.imwrite('res.png',img_rgb)
+print updateBoard()
+cv2.imwrite('res.png',img_rgb)

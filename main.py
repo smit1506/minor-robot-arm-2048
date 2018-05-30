@@ -21,6 +21,9 @@ def main():
     #doMove(getDirection())
     # wait until robot has moved and repeat
 
+    #done
+    vision.releaseCamera()
+
 def doMove(direction):
 
     rob.movel(positions.get("center"), wait=True, vel=0.7, acc=1.1)
