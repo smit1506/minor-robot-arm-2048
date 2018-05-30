@@ -6,7 +6,7 @@ def getMove(board, depth=5):
     false_counter = 0
     weight_board = [[6, 5, 4, 3], [5, 4, 3, 2], [4, 3, 2, 1], [3, 2, 1, 0]]
 
-    for i in range(0, 3):
+    for i in range(0, 4):
         if(game_logic.main_loop(board,i)[0] == True):
             temp_board = game_logic.main_loop(board,i)[1]
             temp_score = 0
