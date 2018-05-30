@@ -8,7 +8,7 @@ camera = None
 img_rgb = None
 img_gray = None
 tiles = None
-path = '' if __name__ == "__main__" else 'robot_vision/'
+path = '' #if __name__ == "__main__" else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
 tile_info = [((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16)]
@@ -33,7 +33,7 @@ def init():
 def updateBoard():
     global img_rgb, img_gray
     # get matches and put them on board list
-    img_rgb = cv2.imread('test12.jpg')
+    img_rgb = cv2.imread('test13.jpg')
     # _, img_rgb  = camera.read()
     # cv2.imshow('frame',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):
