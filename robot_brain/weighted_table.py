@@ -11,7 +11,7 @@ def getMove(board, depth):
     for i in range(0, 4):       
         if(game_logic.main_loop(board,i)[0] == True):
             temp_board = game_logic.main_loop(board,i)[1]
-            temp_score = getScore(temp_board, depth, score)
+            temp_score = getScore(temp_board, depth, 0)
             if (temp_score > score):
                 best_move = i
                 score = temp_score
@@ -36,4 +36,5 @@ def getScore(board, depth, score):
             temp_score = getScore(temp_board, depth-1, score)
             if (temp_score > score):
                 score = temp_score
+            #score += temp_score
     return score

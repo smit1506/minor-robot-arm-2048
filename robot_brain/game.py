@@ -8,7 +8,7 @@ Game = game_logic.Board_game_2048()
 
 def init_game():
     Game.board = zeros((4, 4), dtype=np.int)
-    game_logic.score = 0
+    Game.score = 0
     game_logic.fill_cell(Game.board)
 
 def move(direction):
@@ -40,7 +40,10 @@ def smart_move():
     move = weighted_table.getMove(Game.board,4)
     if(move == -1):
         return -1
-    Game.board = game_logic.main_loop(Game.board,move)[1]
+    #Game.board = game_logic.main_loop(Game.board,move)[1]
+    state = game_logic.main_loop(Game.board,move)
+    Game.board = state[1]
+    Game.score = Game.score + state[2]
     print Game.board
         
 def auto_smart_move():
@@ -48,5 +51,5 @@ def auto_smart_move():
     while smart_move() != -1:
         continue
     print Game.board
-    print game_logic.score
+    print Game.score
     print("Game over!")

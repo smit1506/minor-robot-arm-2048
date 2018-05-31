@@ -103,6 +103,5 @@ def main_loop(board, direction):
     else:
         moved = True
         delta_score = get_score(board,new_board)
-        print(delta_score)
         fill_cell(new_board)
     return (moved, new_board, delta_score, check_game_over(board))
