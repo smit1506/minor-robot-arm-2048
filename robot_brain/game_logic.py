@@ -13,8 +13,6 @@ class Board_game_2048():
     def is_game_over(self):
         pass
 
-score = 0
-
 def fill_cell(board):
     i, j = (board == 0).nonzero()
     if i.size != 0:
@@ -31,8 +29,7 @@ def move(board, direction):
 def move_left(col):
     new_col = zeros((4), dtype=col.dtype)
     j = 0
-    global score
-    new_score = score
+    global test
     previous = None
     for i in range(col.size):
         if col[i] != 0:
@@ -41,7 +38,6 @@ def move_left(col):
             else:
                 if previous == col[i]:
                     new_col[j] = 2 * col[i]
-                    new_score = score + new_col[j]
                     j += 1
                     previous = None
                 else:
@@ -50,7 +46,7 @@ def move_left(col):
                     previous = col[i]
     if previous != None:
         new_col[j] = previous
-    score = new_score
+
     return new_col
 
 def check_game_over(board):
@@ -63,13 +59,50 @@ def check_game_over(board):
                 game_over = True
     return game_over
 
+def get_score(old_board,new_board):
+    old = []
+    new = []
+    for i in range(4):
+        for j in range(4):
+            if (old_board[i][j] > 0):
+                old.append(old_board[i][j])
+            if (new_board[i][j] > 0):
+                new.append(new_board[i][j])
+
+    old = sorted(old,reverse=True)
+    new = sorted(new,reverse=True)
+    diff = []
+    
+    if (np.array_equal(old,new) == False):
+        '''
+        print("old_board:"+str(old))
+        print(old_board)
+        print("new_board:"+str(new))
+        print(new_board)
+        '''
+        offset_i = 0
+
+        for i in range(len(new)):
+            if (new[i] != old[i+offset_i]):
+                if (old[i+offset_i] == old[i+offset_i+1]):
+                    diff.append(new[i])
+                    offset_i = offset_i-1
+                offset_i = offset_i+1
+        #print("difference:"+str(diff))
+        #print(" ")
+
+    return sum(diff)
+
 def main_loop(board, direction):
     new_board = move(board, direction)
     moved = False
+    delta_score = 0
     if (new_board == board).all():
         # move is invalid
         pass
     else:
         moved = True
+        delta_score = get_score(board,new_board)
+        print(delta_score)
         fill_cell(new_board)
-    return (moved, new_board, score, check_game_over(board))
+    return (moved, new_board, delta_score, check_game_over(board))

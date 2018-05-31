@@ -4,20 +4,20 @@ import game_logic
 import monte_carlo
 import weighted_table
 
-Game = game_logic.Board_game_2048(0)
+Game = game_logic.Board_game_2048()
 
 def init_game():
     Game.board = zeros((4, 4), dtype=np.int)
-    Game.score = 0
-    Game.fill_cell(Game.board)
+    game_logic.score = 0
+    game_logic.fill_cell(Game.board)
 
 def move(direction):
-    Game.board = Game.main_loop(Game.board,direction)[1]
+    Game.board = game_logic.main_loop(Game.board,direction)[1]
     print Game.board
 
 def random():
     init_game()
-    monte_carlo.auto_random(Game,250)
+    monte_carlo.auto_random(Game.board,250)
 
 def auto_mc():
     init_game()
