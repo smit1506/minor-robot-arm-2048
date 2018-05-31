@@ -12,7 +12,7 @@ tiles = None
 path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
-tile_info = [((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32)]
+tile_info = [((0,0,0),0), ((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32)]
 
 grid = []
 board = [0] * 16
@@ -56,7 +56,7 @@ def getAllMatches():
 
 def getMatches(templates,grid):
     print(grid)
-    threshold = 0.8
+    threshold = 0.1
     index = 0
     for point in grid:
         gridFragment = img_gray[point[0][1]:point[1][1], point[0][0]:point[1][0]]
@@ -66,18 +66,19 @@ def getMatches(templates,grid):
 
         for template in templates:
             res = cv2.matchTemplate(gridFragment, template[0], cv2.TM_CCOEFF_NORMED)
-            hit_list = (res >= threshold)
-            accuracy = np.sum(hit_list)
-            loc = np.where(hit_list)
+            accuracy = np.amax(res)
+            loc = np.where(res >= threshold)
             loc_list = zip(*loc[::-1])
+            if len(loc_list) == 0:
+                continue
             if best_accuracy < accuracy:
                 best_accuracy = accuracy
                 color = template[1]
                 best_value = template[2]
 
-                print("VALUE: "+str(template[2])+" BETTER SUM:"+str(accuracy))
+                print("VALUE: "+str(template[2])+" BETTER ACCURACY:"+str(accuracy))
             else:
-                print("VALUE: "+str(template[2])+" WORSE SUM:"+str(accuracy))
+                print("VALUE: "+str(template[2])+" WORSE ACCURACY:"+str(accuracy))
         board[index] = best_value
         if best_value > 0:
             cv2.rectangle(img_rgb,point[0],point[1],color,2)
