@@ -127,7 +127,7 @@ def normalizeBoard(board):
     return result
 
 def releaseCamera():
-    camera.realease()
+    camera.release()
 
 # Path should be empty if running module standalone
 if path == '':
