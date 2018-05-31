@@ -37,12 +37,11 @@ def depth():
     monte_carlo.auto_depth(board,50)
 
 def smart_move():
-    move = weighted_table.getMove(Game.board,5)
-    if(move != -1):
-        state = game_logic.main_loop(Game.board,move)
-        Game.board = state[1]
-    else:        
+    move = weighted_table.getMove(Game.board,4)
+    if(move == -1):
         return -1
+    Game.board = game_logic.main_loop(Game.board,move)[1]
+    print Game.board
         
 def auto_smart_move():
     init_game()
@@ -51,4 +50,3 @@ def auto_smart_move():
     print Game.board
     print game_logic.score
     print("Game over!")
-    return
