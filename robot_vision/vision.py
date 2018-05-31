@@ -65,6 +65,7 @@ def getAllmatches2():
         tile_template = cv2.imread(tile_path + '/' + tile, 0)
         templates.append((tile_template, *tile_info[index]))
         index += 1
+    getMatches2(templates,grid)
 
 
 
@@ -101,6 +102,7 @@ def getMatches(template,color, value):
 
 def getMatches2(templates,grid):
     threshold = 0.8
+    index = 0
     for point in grid:
         img1 = imutils.resize(img_gray)
         gridFragment = img1[point[0][0]:point[0][1], point[1][0]:point[1][1]]
@@ -116,12 +118,9 @@ def getMatches2(templates,grid):
                 best_res = current
                 color = template[1]
                 best_value = template[2]
-
-
-
-
-
-
+        board[index] = best_value
+        if best_value > 0:
+            cv2.rectangle(img_rgb,point[0],point[1],color,2)
 
 
 
