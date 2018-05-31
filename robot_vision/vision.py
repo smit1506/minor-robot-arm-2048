@@ -1,7 +1,7 @@
 #template matching attempt
 import os
 import cv2
-import time
+from time import sleep
 import numpy as np
 from matplotlib import pyplot as plt
 import imutils
@@ -21,7 +21,7 @@ board = [0] * 16
 def init():
     global camera, img_rgb, img_gray, tiles
     camera = cv2.VideoCapture(1)
-    time.sleep(1)
+    sleep(1)
     _, img_rgb  = camera.read()
     # cv2.imshow('frame',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):
@@ -41,13 +41,13 @@ def updateBoard():
     # get matches and put them on board list
     # img_rgb = cv2.imread('test13.jpg')
     _, img_rgb  = camera.read()
-    # cv2.imwrite('res.png',img_rgb)
+    cv2.imwrite('cam.png',img_rgb)
     # cv2.imshow('frame',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):
     #     return
 
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    getAllMatches()
+    getAllMatches2()
     return normalizeBoard(board)
 
 def getAllMatches():
@@ -58,12 +58,12 @@ def getAllMatches():
        getMatches(tile_template, *tile_info[index])
        index += 1
 
-def getAllmatches2():
+def getAllMatches2():
     templates = []
     index = 0
     for tile in tiles:
         tile_template = cv2.imread(tile_path + '/' + tile, 0)
-        templates.append((tile_template, *tile_info[index]))
+        templates.append((tile_template, tile_info[index][0], tile_info[index][1]))
         index += 1
     getMatches2(templates,grid)
 
@@ -101,27 +101,45 @@ def getMatches(template,color, value):
 
 
 def getMatches2(templates,grid):
+    print grid
     threshold = 0.8
     index = 0
     for point in grid:
-        img1 = imutils.resize(img_gray)
-        gridFragment = img1[point[0][0]:point[0][1], point[1][0]:point[1][1]]
+        print "point"
+        print point
+        #img1 = imutils.resize(img_gray)
+        gridFragment = img_gray[point[0][1]:point[1][1], point[0][0]:point[1][0]]
         best_res = 0
         best_value = 0
         color = 0
+        current = None
+        # cv2.imshow('getMatches2',gridFragment)
+        # if cv2.waitKey(30000) & 0xFF == ord('q'):
+        #     sleep(1)
         for template in templates:
             res = cv2.matchTemplate(gridFragment, template[0], cv2.TM_CCOEFF_NORMED)
-            current = max(res)
-            if loc < threshold:
+            loc = np.where(res >= threshold)
+            loc_list = zip(*loc[::-1])
+            if len(loc_list) == 0:
+                print ("continue")
                 continue
+            else:
+                current = loc_list[0]
             if best_res < current:
                 best_res = current
                 color = template[1]
                 best_value = template[2]
+                print ("BEST VALUE")
+                print best_value
+            else:
+                print template[2]
+                print best_res
+                print current
+                print ("FALSE")
         board[index] = best_value
         if best_value > 0:
             cv2.rectangle(img_rgb,point[0],point[1],color,2)
-
+        index += 1
 
 
 def getField(fieldTemplate):
@@ -129,12 +147,13 @@ def getField(fieldTemplate):
     blockWidth /= 4
     blockHeigth /= 4
     res = cv2.matchTemplate(img_gray,fieldTemplate,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.5
+    threshold = 0.3
+    print res
+    #loc = np.amax(res)
     loc = np.where(res >= threshold)
-
+    #
+    print loc
     pt = zip(*loc[::-1])[0]
-
-
 
     next_pt = pt
 
@@ -151,7 +170,9 @@ def getField(fieldTemplate):
 def drawGrid(grid):
     for pt in grid:
         cv2.rectangle(img_rgb,pt[0], pt[1], (0,0,0), 2)
-
+    cv2.imshow('drawGrid',img_rgb)
+    if cv2.waitKey(30000) & 0xFF == ord('q'):
+        sleep(1)
 
 
 def normalizeBoard(board):
@@ -166,8 +187,8 @@ def releaseCamera():
     camera.realease()
 
 # printBoard(board)
-# init()
-# print updateBoard()
+init()
+print updateBoard()
 #getAllMatches()
 # print updateBoard()
-# cv2.imwrite('res.png',img_rgb)
+cv2.imwrite('res.png',img_rgb)
