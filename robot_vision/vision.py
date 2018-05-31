@@ -9,17 +9,17 @@ camera = None
 img_rgb = None
 img_gray = None
 tiles = None
-path = '' #if __name__ == "__main__" else 'robot_vision/'
+path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
-tile_info = [((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16)]
+tile_info = [((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32)]
 
 grid = []
 board = [0] * 16
 
 def init():
     global camera, img_rgb, img_gray, tiles
-    camera = cv2.VideoCapture(2)
+    camera = cv2.VideoCapture(1)
     time.sleep(1)
     _, img_rgb  = camera.read()
     # cv2.imshow('frame',img_rgb)
@@ -40,6 +40,7 @@ def updateBoard():
     # get matches and put them on board list
     # img_rgb = cv2.imread('test13.jpg')
     _, img_rgb  = camera.read()
+    # cv2.imwrite('res.png',img_rgb)
     # cv2.imshow('frame',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):
     #     return
@@ -94,7 +95,7 @@ def getField(fieldTemplate):
     blockWidth /= 4
     blockHeigth /= 4
     res = cv2.matchTemplate(img_gray,fieldTemplate,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
+    threshold = 0.5
     loc = np.where(res >= threshold)
 
     pt = zip(*loc[::-1])[0]
@@ -131,8 +132,8 @@ def releaseCamera():
     camera.realease()
 
 # printBoard(board)
-init()
+# init()
 # print updateBoard()
 #getAllMatches()
-print updateBoard()
-cv2.imwrite('res.png',img_rgb)
+# print updateBoard()
+# cv2.imwrite('res.png',img_rgb)
