@@ -4,6 +4,7 @@ import cv2
 import time
 import numpy as np
 from matplotlib import pyplot as plt
+import imutils
 
 camera = None
 img_rgb = None
@@ -57,6 +58,14 @@ def getAllMatches():
        getMatches(tile_template, *tile_info[index])
        index += 1
 
+def getAllmatches2():
+    templates = []
+    index = 0
+    for tile in tiles:
+        tile_template = cv2.imread(tile_path + '/' + tile, 0)
+        templates.append((tile_template, *tile_info[index]))
+        index += 1
+
 
 
 def getMatches(template,color, value):
@@ -88,6 +97,32 @@ def getMatches(template,color, value):
 
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), color , 2)
         last_pts.append(pt)
+
+
+def getMatches2(templates,grid):
+    threshold = 0.8
+    for point in grid:
+        img1 = imutils.resize(img_gray)
+        gridFragment = img1[point[0][0]:point[0][1], point[1][0]:point[1][1]]
+        best_res = 0
+        best_value = 0
+        color = 0
+        for template in templates:
+            res = cv2.matchTemplate(gridFragment, template[0], cv2.TM_CCOEFF_NORMED)
+            current = max(res)
+            if loc < threshold:
+                continue
+            if best_res < current:
+                best_res = current
+                color = template[1]
+                best_value = template[2]
+
+
+
+
+
+
+
 
 
 def getField(fieldTemplate):
