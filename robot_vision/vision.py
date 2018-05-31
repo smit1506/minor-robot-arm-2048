@@ -12,7 +12,7 @@ tiles = None
 path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
-tile_info = [((0,0,0),0), ((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32)]
+tile_info = [((),0), ((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32)]
 
 grid = []
 board = [0] * 16
@@ -36,7 +36,7 @@ def updateBoard():
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
     #_, img_rgb  = camera.read()
-    img_rgb = cv2.imread('cam.png')
+    img_rgb = cv2.imread(path + 'cam.png')
 
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     getAllMatches()
@@ -92,7 +92,11 @@ def getField(fieldTemplate):
     res = cv2.matchTemplate(img_gray,fieldTemplate,cv2.TM_CCOEFF_NORMED)
     threshold = 0.3
     loc = np.where(res >= threshold)
-    pt = zip(*loc[::-1])[0]
+    loc_list = zip(*loc[::-1])
+    if len(loc_list) == 0:
+        print("No field template found. Exiting...")
+        exit(0)
+    pt = loc_list[0]
 
     next_pt = pt
 
@@ -125,9 +129,9 @@ def normalizeBoard(board):
 def releaseCamera():
     camera.realease()
 
-# printBoard(board)
-
-if __name__ == "__main__":
+# Path should be empty if running module standalone
+if path == '':
     init()
     print(updateBoard())
     cv2.imwrite('res.png',img_rgb)
+    releaseCamera()
