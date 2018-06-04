@@ -22,9 +22,11 @@ def init():
     camera = cv2.VideoCapture(1)
     sleep(1)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    #_, img_rgb  = camera.read()
-    img_rgb = cv2.imread(path + 'cam.png')
+    _, img_rgb  = camera.read()
+    #img_rgb = cv2.imread(path + 'cam.png')
 
+
+    cv2.imwrite('cam.png',img_rgb)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
     fieldTemplate = cv2.imread(template_path + '/template_field.png', 0)
@@ -35,8 +37,8 @@ def updateBoard():
     # get matches and put them on board list
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    #_, img_rgb  = camera.read()
-    img_rgb = cv2.imread(path + 'cam.png')
+    _, img_rgb  = camera.read()
+    # img_rgb = cv2.imread(path + 'cam.png')
 
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     getAllMatches()
@@ -55,7 +57,6 @@ def getAllMatches():
 
 
 def getMatches(templates,grid):
-    print(grid)
     threshold = 0.1
     index = 0
     for point in grid:
@@ -76,9 +77,9 @@ def getMatches(templates,grid):
                 color = template[1]
                 best_value = template[2]
 
-                print("VALUE: "+str(template[2])+" BETTER ACCURACY:"+str(accuracy))
-            else:
-                print("VALUE: "+str(template[2])+" WORSE ACCURACY:"+str(accuracy))
+                # print("VALUE: "+str(template[2])+" BETTER ACCURACY:"+str(accuracy))
+            # else:
+            #     print("VALUE: "+str(template[2])+" WORSE ACCURACY:"+str(accuracy))
         board[index] = best_value
         if best_value > 0:
             cv2.rectangle(img_rgb,point[0],point[1],color,2)
@@ -90,7 +91,7 @@ def getField(fieldTemplate):
     blockWidth /= 4
     blockHeigth /= 4
     res = cv2.matchTemplate(img_gray,fieldTemplate,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.3
+    threshold = 0.6
     loc = np.where(res >= threshold)
     loc_list = zip(*loc[::-1])
     if len(loc_list) == 0:
