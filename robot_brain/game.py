@@ -19,22 +19,12 @@ def random():
     init_game()
     monte_carlo.auto_random(Game.board,250)
 
-def auto_mc():
+def auto_alg():
     init_game()
-    while (game_logic.main_loop(Game.board,0)[3] == False):
-        if (mc() == False):
-            break
-        else:
-            Game.board = game_logic.main_loop(Game.board,mc())[1]
-    print "score:"
-    print(game_logic.score)
+    while(game_logic.main_loop(Game.board,0)[3] == False):
+        Game.board = game_logic.main_loop(Game.board,monte_carlo.alg(Game,10))[1]
+    print("stop: "+str(Game.score))
     print(Game.board)
-
-def mc():
-    return monte_carlo.alg(Game,10)
-
-def depth():
-    monte_carlo.auto_depth(board,50)
 
 def smart_move():
     move = weighted_table.getMove(Game.board,4)
