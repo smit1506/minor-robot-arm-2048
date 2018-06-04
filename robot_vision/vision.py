@@ -22,14 +22,15 @@ def init():
     camera = cv2.VideoCapture(1)
     sleep(1)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    _, img_rgb  = camera.read()
+    #_, img_rgb  = camera.read()
     #img_rgb = cv2.imread(path + 'cam.png')
-
+    img_rgb = cv2.imread('cam.png')
 
     cv2.imwrite('cam.png',img_rgb)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
-    fieldTemplate = cv2.imread(template_path + '/template_field.png', 0)
+    #fieldTemplate = cv2.imread(template_path + '/template_field.png', 0)
+    fieldTemplate = getFieldTemplate(img_gray)
     getField(fieldTemplate)
 
 def updateBoard():
@@ -37,8 +38,9 @@ def updateBoard():
     # get matches and put them on board list
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    _, img_rgb  = camera.read()
-    # img_rgb = cv2.imread(path + 'cam.png')
+    #_, img_rgb  = camera.read()
+     #img_rgb = cv2.imread(path + 'cam.png')
+    img_rgb = cv2.imread('cam.png')
 
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     getAllMatches()
@@ -54,6 +56,16 @@ def getAllMatches():
         index += 1
     getMatches(templates,grid)
 
+# def getFieldTemplate(image,point):
+#     img =  image[point[0][1]:point[1][1], point[0][0]:point[1][0]]
+#     cv2.imwrite("field.png",img)
+#     return img
+
+def getFieldTemplate(image):
+    r = cv2.selectROI("Image",image,False,False)
+    imCrop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
+    cv2.imwrite("field.png", imCrop)
+    return imCrop
 
 
 def getMatches(templates,grid):
