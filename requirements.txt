@@ -1,0 +1,5 @@
+matplotlib
+numpy
+opencv-python
+opencv-contrib-python
+git+https://github.com/msnijder30/UR5Share.git#subdirectory=control

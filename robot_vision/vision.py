@@ -22,25 +22,21 @@ def init():
     camera = cv2.VideoCapture(1)
     sleep(1)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    #_, img_rgb  = camera.read()
+    _, img_rgb  = camera.read()
     #img_rgb = cv2.imread(path + 'cam.png')
-    img_rgb = cv2.imread('cam.png')
 
-    cv2.imwrite('cam.png',img_rgb)
+    cv2.imwrite(path + 'cam.png',img_rgb)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
-    #fieldTemplate = cv2.imread(template_path + '/template_field.png', 0)
-    fieldTemplate = getFieldTemplate(img_gray)
-    getField(fieldTemplate)
+    field_template = cv2.imread(template_path + '/template_field.png', 0)
+    getField(field_template)
 
 def updateBoard():
     global img_rgb, img_gray
-    # get matches and put them on board list
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    #_, img_rgb  = camera.read()
-     #img_rgb = cv2.imread(path + 'cam.png')
-    img_rgb = cv2.imread('cam.png')
+    _, img_rgb  = camera.read()
+    #img_rgb = cv2.imread(path + 'cam.png')
 
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     getAllMatches()
@@ -56,29 +52,18 @@ def getAllMatches():
         index += 1
     getMatches(templates,grid)
 
-# def getFieldTemplate(image,point):
-#     img =  image[point[0][1]:point[1][1], point[0][0]:point[1][0]]
-#     cv2.imwrite("field.png",img)
-#     return img
-
-def getFieldTemplate(image):
-    r = cv2.selectROI("Image",image,False,False)
-    imCrop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
-    cv2.imwrite("field.png", imCrop)
-    return imCrop
-
 
 def getMatches(templates,grid):
     threshold = 0.1
     index = 0
     for point in grid:
-        gridFragment = img_gray[point[0][1]:point[1][1], point[0][0]:point[1][0]]
+        grid_fragment = img_gray[point[0][1]:point[1][1], point[0][0]:point[1][0]]
         best_accuracy = 0
         best_value = 0
         color = None
 
         for template in templates:
-            res = cv2.matchTemplate(gridFragment, template[0], cv2.TM_CCOEFF_NORMED)
+            res = cv2.matchTemplate(grid_fragment, template[0], cv2.TM_CCOEFF_NORMED)
             accuracy = np.amax(res)
             loc = np.where(res >= threshold)
             loc_list = zip(*loc[::-1])
@@ -98,26 +83,32 @@ def getMatches(templates,grid):
         index += 1
 
 
-def getField(fieldTemplate):
-    blockWidth, blockHeigth = fieldTemplate.shape[::-1]
-    blockWidth /= 4
-    blockHeigth /= 4
-    res = cv2.matchTemplate(img_gray,fieldTemplate,cv2.TM_CCOEFF_NORMED)
+def getFieldTemplate(image):
+    r = cv2.selectROI("Image",image,False,False)
+    img_crop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
+    cv2.imwrite(template_path + '/template_field.png', img_crop)
+    return img_crop
+
+def getField(field_emplate):
+    block_width, block_height = field_emplate.shape[::-1]
+    block_width /= 4
+    block_height /= 4
+    res = cv2.matchTemplate(img_gray,field_emplate,cv2.TM_CCOEFF_NORMED)
     threshold = 0.6
     loc = np.where(res >= threshold)
     loc_list = zip(*loc[::-1])
     if len(loc_list) == 0:
-        print("No field template found. Exiting...")
-        exit(0)
+        print("No field template found. Select new template.")
+        return getField(getFieldTemplate(img_gray))
     pt = loc_list[0]
 
     next_pt = pt
 
     for y in range (1,5):
         for x in range (1,5):
-            grid.append((pt, (pt[0] + blockWidth, pt[1] + (blockHeigth))))
-            pt = ((pt[0] + (blockWidth), pt[1]))
-        pt = (next_pt[0], (next_pt[1] + blockHeigth* y))
+            grid.append((pt, (pt[0] + block_width, pt[1] + (block_width))))
+            pt = ((pt[0] + (block_width), pt[1]))
+        pt = (next_pt[0], (next_pt[1] + block_height* y))
 
 
     drawGrid(grid)

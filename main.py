@@ -54,18 +54,18 @@ def getDirection():
         print(board)
         return weighted_table.getMove(board, 4)
     count = 0
-    shouldUpdate = True
-    updatedBoard = board
+    should_update = True
+    updated_board = board
     while(board == last_board or count < 3):
             sleep(1)
-            if shouldUpdate:
+            if should_update:
                 board = vision.updateBoard()
-                shouldUpdate = False
+                should_update = False
             else:
-                updatedBoard = vision.updateBoard()
-                if updatedBoard != board:
-                    shouldUpdate = True
-            if (not shouldUpdate):
+                updated_board = vision.updateBoard()
+                if updated_board != board:
+                    should_update = True
+            if (not should_update):
                 count += 1
             else:
                 count = 0
@@ -75,32 +75,5 @@ def getDirection():
     print(board)
     return weighted_table.getMove(board, 4)
 
-
-# def getDirection():
-#     global board
-#     updating = False
-#     last_board = board
-#     board = vision.updateBoard()
-#     while (board == last_board or updating):
-#         sleep(1)
-#         board = vision.updateBoard()
-#         if (board != last_board and not updating):
-#             updating = True
-#             print("updating")
-#             #print(board)
-#         else:
-#             updating = False
-#             print("Waiting for board change...")
-#
-#     print(board)
-#     return weighted_table.getMove(board, 4)
-
-#temporary
-# rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
-# doMove(0)
-# doMove(2)
-# doMove(3)
-# doMove(1)
-# rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
 main()
 print("Done")
