@@ -21,10 +21,13 @@ def random():
 
 def auto_alg():
     init_game()
+    monte_carlo.get_best_move(Game.board,5)
+    '''
     while(game_logic.main_loop(Game.board,0)[3] == False):
-        Game.board = game_logic.main_loop(Game.board,monte_carlo.alg(Game,10))[1]
+        Game.board = game_logic.main_loop(Game.board,monte_carlo.alg(Game,1000,5))[1]
     print("stop: "+str(Game.score))
     print(Game.board)
+    '''
 
 def smart_move():
     move = weighted_table.getMove(Game.board,4)
