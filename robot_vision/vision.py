@@ -85,7 +85,13 @@ def getMatches(templates,grid):
 
 def getFieldTemplate(image):
     r = cv2.selectROI("Image",image,False,False)
+    if (sum(r) == 0):
+        print ("Nothing selected. Restart the script.")
+        exit(0)
     img_crop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
+    if (img_crop == []):
+        print ("IMG CROP")
+        print (img_crop)
     cv2.imwrite(template_path + '/template_field.png', img_crop)
     return img_crop
 
