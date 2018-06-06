@@ -3,6 +3,7 @@ from numpy import zeros
 import game_logic
 import monte_carlo
 import weighted_table
+import expectimax
 
 Game = game_logic.Board_game_2048()
 
@@ -21,14 +22,13 @@ def random():
 
 def auto_alg():
     init_game()
-    monte_carlo.get_best_move(Game.board,5)
-    '''
-    while(game_logic.main_loop(Game.board,0)[3] == False):
-        Game.board = game_logic.main_loop(Game.board,monte_carlo.alg(Game,1000,5))[1]
-    print("stop: "+str(Game.score))
-    print(Game.board)
-    '''
+    while(game_logic.main_loop(Game.board,0)[3] != True):
+        Game.board = game_logic.main_loop(Game.board,expectimax.get_best_move(Game.board,6))[1]
 
+        print(Game.board)
+    print("Game over!")
+    print(Game.board)
+    
 def smart_move():
     move = weighted_table.getMove(Game.board,4)
     if(move == -1):
