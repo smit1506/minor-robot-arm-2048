@@ -18,9 +18,9 @@ def main():
     vision.init()
     direction = None
     while (direction != -1):
-        direction = getDirection()
-        print(direction)
-        #doMove(direction)
+        #direction = getDirection()
+        #print(direction)
+        doMove(getDirection())
     #rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
     # loop
     #doMove(getDirection())
@@ -32,17 +32,22 @@ def main():
 def doMove(direction):
 
     #go to center of screen and do move
-    rob.movel(positions.get("center"), wait=True, vel=0.7, acc=1.1)
+    #rob.movel(positions.get("center"), wait=True, vel=0.7, acc=1.1)
+
     if direction == 0:
-        rob.movel(positions.get("left"), wait=True, vel=0.7, acc=1.1)
+        #rob.movel(positions.get("left"), wait=True, vel=0.7, acc=1.1)
+        print("Left!")
     elif direction == 1:
-        rob.movel(positions.get("up"), wait=True, vel=0.7, acc=1.1)
+        #rob.movel(positions.get("up"), wait=True, vel=0.7, acc=1.1)
+        print("Up!")
     elif direction == 2:
-        rob.movel(positions.get("right"), wait=True, vel=0.7, acc=1.1)
+        #rob.movel(positions.get("right"), wait=True, vel=0.7, acc=1.1)
+        print("Right!")
     elif direction == 3:
-        rob.movel(positions.get("down"), wait=True, vel=0.7, acc=1.1)
+        #rob.movel(positions.get("down"), wait=True, vel=0.7, acc=1.1)
+        print("Down!")
     #move back to start
-    rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
+    #rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
 
 
 def getDirection():
