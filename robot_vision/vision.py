@@ -12,13 +12,14 @@ tiles = None
 path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
-tile_info = [((),0), ((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32)]
+tile_info = [((),0), ((0,255,0),2), ((255,0,0),4), ((125,0,125),8), ((0,125,125),16), ((0,0,255),32), ((125, 0, 0),64)]
 
 grid = []
 board = [0] * 16
 
 def init():
     global camera, img_rgb, img_gray, tiles
+    #camera = cv2.VideoCapture("http://141.252.128.6:4242/current.jpg?type=color")
     camera = cv2.VideoCapture(1)
     sleep(1)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
