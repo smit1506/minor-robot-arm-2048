@@ -40,7 +40,7 @@ if __name__ == "__main__":
     #rec = positions(sys.argv[1])
     rec = positions("D:/Documents/Minors/Robotarm/Programs/2048/robot_controls/positions.txt")
 
-    rob = urx.Robot("141.252.128.7")
+    rob = urx.Robot("141.252.128.6")
     sleep(0.2)  #leave some time to robot to process the setup commands
 
     while(True):

@@ -1,6 +1,7 @@
 #template matching attempt
 import os
 import cv2
+import urllib2
 from time import sleep
 import numpy as np
 from matplotlib import pyplot as plt
@@ -9,6 +10,7 @@ camera = None
 img_rgb = None
 img_gray = None
 tiles = None
+url = "http://141.252.128.6:4242/current.jpg?type=color"
 path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
@@ -19,11 +21,13 @@ board = [0] * 16
 
 def init():
     global camera, img_rgb, img_gray, tiles
-    #camera = cv2.VideoCapture("http://141.252.128.6:4242/current.jpg?type=color")
-    camera = cv2.VideoCapture(1)
+
+    _ = urllib2.urlopen("http://141.252.128.6:4242/setdisplaysize?width=1280&height=720").read()
+    camera = cv2.VideoCapture("")
+    #camera = cv2.VideoCapture(1)
     sleep(1)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    _, img_rgb  = camera.read()
+    _, img_rgb  = getCameraImage()
     #img_rgb = cv2.imread(path + 'cam.png')
 
     cv2.imwrite(path + 'cam.png',img_rgb)
@@ -36,13 +40,14 @@ def updateBoard():
     global img_rgb, img_gray
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    _, img_rgb  = camera.read()
+    _, img_rgb  = getCameraImage()
     #img_rgb = cv2.imread(path + 'cam.png')
-
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     getAllMatches()
     return normalizeBoard(board)
 
+def getCameraImage():
+    return cv2.VideoCapture(url).read()
 
 def getAllMatches():
     templates = []
