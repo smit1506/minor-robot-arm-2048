@@ -36,5 +36,4 @@ def getScore(board, depth, score):
             temp_score = getScore(temp_board, depth-1, score)
             if (temp_score > score):
                 score = temp_score
-            #score += temp_score
     return score

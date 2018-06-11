@@ -21,6 +21,7 @@ def fill_cell(board,number=1):
             board[i[rnd], j[rnd]] = 2 * ((random() > .9) + 1)
         else:
             board[i[rnd], j[rnd]] = number
+    return board 
 
 def move(board, direction):
     # 0: left, 1: up, 2: right, 3: down
@@ -96,7 +97,7 @@ def get_score(old_board,new_board):
 
     return sum(diff)
 
-def main_loop(board, direction, number={1}):
+def main_loop(board, direction, number=1):
     new_board = move(board, direction)
     moved = False
     delta_score = 0
@@ -107,9 +108,9 @@ def main_loop(board, direction, number={1}):
         moved = True
         delta_score = get_score(board,new_board)
         if(number == 1):
-            fill_cell(new_board)
+            new_board = fill_cell(new_board)
         elif(number == 2 or number == 4):
-            fill_cell(new_board,number)
+            new_board = fill_cell(new_board,number)
     return (moved, new_board, delta_score, check_game_over(new_board))
 
 
