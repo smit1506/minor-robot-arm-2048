@@ -22,9 +22,18 @@ def random():
 
 def auto_alg():
     init_game()
-    while(game_logic.main_loop(Game.board,0)[3] != True):
-        Game.board = game_logic.main_loop(Game.board,expectimax.get_best_move(Game.board,6))[1]
-
+    #print("Start the game with:")
+    #print(Game.board)
+    while(game_logic.main_loop(Game.board,0)[3] == False):
+        temp_board = []
+        temp_board = Game.board
+        best_move = expectimax.get_best_move(temp_board)
+        if (best_move == -1):
+            print("NOOOOO")
+            print(Game.board)
+            break
+        Game.board = game_logic.main_loop(temp_board,best_move)[1]
+        print("New board")
         print(Game.board)
     print("Game over!")
     print(Game.board)
