@@ -22,9 +22,11 @@ def random():
 
 def auto_alg():
     init_game()
+    best_move = -2
     #print("Start the game with:")
     #print(Game.board)
-    while(game_logic.main_loop(Game.board,0)[3] == False):
+    #'''
+    while(best_move != -1):
         temp_board = []
         temp_board = Game.board
         best_move = expectimax.get_best_move(temp_board)
@@ -37,6 +39,18 @@ def auto_alg():
         print(Game.board)
     print("Game over!")
     print(Game.board)
+    #'''
+    '''
+    temp_board = []
+    temp_board = Game.board
+    best_move = expectimax.get_best_move(temp_board)
+    if (best_move == -1):
+        print("NOOOOO")
+        print(Game.board)
+    Game.board = game_logic.main_loop(temp_board,best_move)[1]
+    print("New board")
+    print(Game.board)
+    '''
     
 def smart_move():
     move = weighted_table.getMove(Game.board,4)
