@@ -3,7 +3,7 @@ from numpy import zeros
 import game_logic
 import monte_carlo
 import weighted_table
-import expectimax
+import minimax
 
 Game = game_logic.Board_game_2048()
 
@@ -22,21 +22,37 @@ def random():
 
 def auto_alg():
     init_game()
-    #print("Start the game with:")
-    #print(Game.board)
-    while(game_logic.main_loop(Game.board,0)[3] == False):
+    best_move = -2
+    game_over = False
+    depth = 4
+    Game.board = [[1024,512,256,16],
+                 [0,0,16,32],
+                 [0,2,2,4],
+                 [0,0,0,2]]
+    while(not(game_over)):
         temp_board = []
         temp_board = Game.board
-        best_move = expectimax.get_best_move(temp_board)
-        if (best_move == -1):
-            print("NOOOOO")
-            print(Game.board)
-            break
+        empty_cells = []
+        false_counter = 0
+        
+        for x in range(0,4):
+            for y in range(0,4):
+                if(temp_board[x][y] == 0):
+                    empty_cells.append(0)
+        test_depth = len(empty_cells)
+        depth_map = [9,9,8,8,8,8,8,6,6,5,5,5,5,4,4,4]
+        depth = depth_map[test_depth]
+
+        best_move = minimax.minimax(temp_board,depth,"PLAYER")[0]
         Game.board = game_logic.main_loop(temp_board,best_move)[1]
-        print("New board")
+        print("New board with move: "+str(best_move))
         print(Game.board)
-    print("Game over!")
-    print(Game.board)
+        for i in range(0,4):
+            if(game_logic.main_loop(temp_board,i)[0] != True):
+                false_counter += 1
+                if(false_counter == 4):
+                    print("NOOOOO GAME OVAAAHHR")
+                    game_over = True
     
 def smart_move():
     move = weighted_table.getMove(Game.board,4)

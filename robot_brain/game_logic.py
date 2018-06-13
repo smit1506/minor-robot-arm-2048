@@ -58,7 +58,7 @@ def check_game_over(board):
     game_over = False
     for i in range(0,4):
         if (np.array_equal(board,move(board,i))):
-            checker = (checker+1)
+            checker += 1
             if checker == 4:
                 game_over = True
     return game_over
@@ -72,29 +72,17 @@ def get_score(old_board,new_board):
                 old.append(old_board[i][j])
             if (new_board[i][j] > 0):
                 new.append(new_board[i][j])
-
     old = sorted(old,reverse=True)
     new = sorted(new,reverse=True)
     diff = []
-    
     if (np.array_equal(old,new) == False):
-        '''
-        print("old_board:"+str(old))
-        print(old_board)
-        print("new_board:"+str(new))
-        print(new_board)
-        '''
         offset_i = 0
-
         for i in range(len(new)):
             if (new[i] != old[i+offset_i]):
                 if (old[i+offset_i] == old[i+offset_i+1]):
                     diff.append(new[i])
                     offset_i = offset_i-1
                 offset_i = offset_i+1
-        #print("difference:"+str(diff))
-        #print(" ")
-
     return sum(diff)
 
 def main_loop(board, direction, number=1):

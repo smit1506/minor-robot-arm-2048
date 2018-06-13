@@ -1,8 +1,8 @@
 import game_logic
-weight_board = [[6, 5, 4, 3],
-                [5, 4, 3, 2],
-                [4, 3, 2, 1],
-                [3, 2, 1, 0]]
+weight_board = [[10,8,7,6.5],
+                [0.5,0.7,1,3],
+                [-.5,-1.5,-1.8,-2],
+                [-3.8,-3.7,-3.5,-3]]
 
 def getMove(board, depth):
     score = 0
