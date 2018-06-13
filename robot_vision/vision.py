@@ -10,7 +10,8 @@ camera = None
 img_rgb = None
 img_gray = None
 tiles = None
-url = "http://141.252.128.6:4242/current.jpg?type=color"
+ip = "141.252.128.6"
+url = "http://" + ip + ":4242/current.jpg?type=color"
 path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
@@ -22,7 +23,7 @@ board = [0] * 16
 def init():
     global camera, img_rgb, img_gray, tiles
 
-    _ = urllib2.urlopen("http://141.252.128.6:4242/setdisplaysize?width=1280&height=720").read()
+    _ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     camera = cv2.VideoCapture("")
     #camera = cv2.VideoCapture(1)
     sleep(1)
