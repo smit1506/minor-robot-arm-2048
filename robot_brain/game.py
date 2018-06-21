@@ -25,10 +25,12 @@ def auto_alg():
     best_move = -2
     game_over = False
     depth = 4
+    '''
     Game.board = [[1024,512,256,16],
                  [0,0,16,32],
                  [0,2,2,4],
                  [0,0,0,2]]
+    '''
     while(not(game_over)):
         temp_board = []
         temp_board = Game.board
@@ -40,7 +42,7 @@ def auto_alg():
                 if(temp_board[x][y] == 0):
                     empty_cells.append(0)
         test_depth = len(empty_cells)
-        depth_map = [9,9,8,8,8,8,8,6,6,5,5,5,5,4,4,4]
+        depth_map = [6,6,5,5,5,4,4,4,4,4,4,4,4,4,2,2]
         depth = depth_map[test_depth]
 
         best_move = minimax.minimax(temp_board,depth,"PLAYER")[0]
