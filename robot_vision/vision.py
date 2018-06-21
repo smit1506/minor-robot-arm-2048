@@ -26,7 +26,7 @@ def init():
     _ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     camera = cv2.VideoCapture("")
     #camera = cv2.VideoCapture(1)
-    sleep(1)
+    sleep(3)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
     _, img_rgb  = getCameraImage()
     #img_rgb = cv2.imread(path + 'cam.png')
@@ -41,9 +41,12 @@ def updateBoard():
     global img_rgb, img_gray
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
+    sleep(3)
     _, img_rgb  = getCameraImage()
     #img_rgb = cv2.imread(path + 'cam.png')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    # cv2.imshow("board",img_gray)
+    # cv2.waitKey(0)
     getAllMatches()
     return normalizeBoard(board)
 

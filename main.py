@@ -24,6 +24,7 @@ def main():
         #print(direction)
         doMove(getDirection())
     #rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
+
     # loop
     #doMove(getDirection())
     # wait until robot has moved and repeat
@@ -56,7 +57,7 @@ def getDirection():
     last_board = board
 
     rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
-    sleep(1)
+    sleep(2)
     board = vision.updateBoard()
     print(board)
     return weighted_table.getMove(board, 4)
