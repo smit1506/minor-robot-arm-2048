@@ -22,12 +22,11 @@ board = [0] * 16
 def init():
     global  img_rgb, img_gray, tiles
 
-    _ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
+    # UNCOMMENT THIS WHEN ROBOT IS ON
+    #_ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     sleep(3)
-    # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
     img_rgb  = getCameraImage()
 
-    cv2.imwrite(path + 'cam.png',img_rgb)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
     field_template = cv2.imread(template_path + '/template_field.png', 0)
@@ -47,7 +46,10 @@ def updateBoard():
 
 def getCameraImage():
     # return cv2.imread(path + 'cam.png')
-    _, image = cv2.VideoCapture(url).read()
+    # UNCOMMENT THIS WHEN ROBOT IS ON
+    #_, image = cv2.VideoCapture(url).read()
+    image = cv2.imread(path + 'cam.png')
+    cv2.imwrite(path + '../interface/' + 'cam.png',image)
     return image
 
 def getAllMatches():

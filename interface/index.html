@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <div class="content d-flex">
+        <div id="init" class="content d-flex">
             <div class="d-inline-block mx-auto my-auto">
                 <button type="button" class="big-btn btn btn-lg btn-danger" onclick="calibrate(this)">Calibrate</button>
                 <div id="calibration-menu" class="hidden">
@@ -36,9 +36,9 @@
                 <div id="start-button" class="hidden" onclick="activate(this)">
                     <img src="nuclear.png" alt="">
                 </div>
-                <canvas id="canvas" class="hidden"></canvas>
             </div>
         </div>
+        <canvas id="canvas" class="hidden" height="720" width="1280"></canvas>
 
         <script src="js/script.js" charset="utf-8"></script>
     </body>
