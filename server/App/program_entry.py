@@ -14,7 +14,9 @@ class ProgramEntry:
     def do_something(self):
         print('Something')
         response = Response(200)
+        #response.add_header('Access-Control-Allow-Origin','*')
         response.add_body(content_type['text'], 'Hello world')
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response
 
     # do on post
@@ -25,13 +27,22 @@ class ProgramEntry:
         response.add_body(content_type['text'], 'Hello world')
         return response
 
+    def run_program(self):
+        print('Running program')
+        response = Response(200)
+        #response.add_header('Access-Control-Allow-Origin','*')
+        response.add_body(content_type['text'], '1')
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
+        return response
+
 
 # make instance of your class
 program = ProgramEntry()
 
 # bind routes to functions
 get_routes = {
-    '/sample/test': program.do_something
+    '/sample/test': program.do_something,
+    '/run': program.run_program
 }
 
 post_routes = {
