@@ -15,10 +15,7 @@ board = None
 
 def main():
 
-    try:
-        rob.movel(positions.get("start"), wait=True, vel=0.2, acc=0.5)
-    except:
-        print "Robot stopped"
+    rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     #sleep(5)
     vision.init()
     direction = None
@@ -27,6 +24,7 @@ def main():
         #print(direction)
         doMove(getDirection())
     #rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
+
     # loop
     #doMove(getDirection())
     # wait until robot has moved and repeat
@@ -36,62 +34,34 @@ def main():
 
 def doMove(direction):
 
-    try:
-        #go to center of screen and do move
-        rob.movel(positions.get("center"), wait=True, vel=0.2, acc=0.5)
-
-        if direction == 0:
-            rob.movel(positions.get("left"), wait=True, vel=0.2, acc=0.5)
-            print("Left!")
-        elif direction == 1:
-            rob.movel(positions.get("up"), wait=True, vel=0.2, acc=0.5)
-            print("Up!")
-        elif direction == 2:
-            rob.movel(positions.get("right"), wait=True, vel=0.2, acc=0.5)
-            print("Right!")
-        elif direction == 3:
-            rob.movel(positions.get("down"), wait=True, vel=0.2, acc=0.5)
-            print("Down!")
-        sleep(3)
-    except:
-        print "Robot stopped"
+    #go to center of screen and do move
+    rob.movel(positions.get("center"), wait=False, vel=0.2, acc=0.5)
+    sleep(1)
+    if direction == 0:
+        rob.movel(positions.get("left"), wait=False, vel=0.2, acc=0.5)
+        print("Left!")
+    elif direction == 1:
+        rob.movel(positions.get("up"), wait=False, vel=0.2, acc=0.5)
+        print("Up!")
+    elif direction == 2:
+        rob.movel(positions.get("right"), wait=False, vel=0.2, acc=0.5)
+        print("Right!")
+    elif direction == 3:
+        rob.movel(positions.get("down"), wait=False, vel=0.2, acc=0.5)
+        print("Down!")
+    sleep(1)
 
 def getDirection():
     global board
     updated = False
     last_board = board
 
-    try:
-        rob.movel(positions.get("start"), wait=True, vel=0.2, acc=0.5)
-    except:
-        print "Robot stopped"
+    rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     sleep(2)
-
     board = vision.updateBoard()
-    if last_board == None:
-        print(board)
-        return weighted_table.getMove(board, 4)
-    count = 0
-    should_update = True
-    updated_board = board
-    while(board == last_board or count < 3):
-            sleep(1)
-            if should_update:
-                board = vision.updateBoard()
-                should_update = False
-            else:
-                updated_board = vision.updateBoard()
-                if updated_board != board:
-                    should_update = True
-            if (not should_update):
-                count += 1
-            else:
-                count = 0
-            print("Waiting for board change...")
-
-
     print(board)
     return weighted_table.getMove(board, 4)
+
 
 main()
 print("Done")

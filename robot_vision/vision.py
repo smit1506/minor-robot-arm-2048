@@ -6,11 +6,11 @@ from time import sleep
 import numpy as np
 from matplotlib import pyplot as plt
 
-camera = None
 img_rgb = None
 img_gray = None
 tiles = None
-url = "http://141.252.128.6:4242/current.jpg?type=color"
+ip = "141.252.128.6"
+url = "http://" + ip + ":4242/current.jpg?type=color"
 path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
 template_path = path + 'templates'
 tile_path = template_path + '/tiles'
@@ -20,15 +20,12 @@ grid = []
 board = [0] * 16
 
 def init():
-    global camera, img_rgb, img_gray, tiles
+    global  img_rgb, img_gray, tiles
 
-    _ = urllib2.urlopen("http://141.252.128.6:4242/setdisplaysize?width=1280&height=720").read()
-    camera = cv2.VideoCapture("")
-    #camera = cv2.VideoCapture(1)
-    sleep(1)
+    _ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
+    sleep(3)
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    _, img_rgb  = getCameraImage()
-    #img_rgb = cv2.imread(path + 'cam.png')
+    img_rgb  = getCameraImage()
 
     cv2.imwrite(path + 'cam.png',img_rgb)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -40,14 +37,18 @@ def updateBoard():
     global img_rgb, img_gray
 
     # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
-    _, img_rgb  = getCameraImage()
-    #img_rgb = cv2.imread(path + 'cam.png')
+    sleep(3)
+    img_rgb  = getCameraImage()
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    # cv2.imshow("board",img_gray)
+    # cv2.waitKey(0)
     getAllMatches()
     return normalizeBoard(board)
 
 def getCameraImage():
-    return cv2.VideoCapture(url).read()
+    # return cv2.imread(path + 'cam.png')
+    _, image = cv2.VideoCapture(url).read()
+    return image
 
 def getAllMatches():
     templates = []
@@ -77,10 +78,6 @@ def getMatches(templates,grid):
             if best_accuracy < accuracy:
                 best_accuracy = accuracy
                 best_value = template[1]
-
-                # print("VALUE: "+str(template[2])+" BETTER ACCURACY:"+str(accuracy))
-            # else:
-            #     print("VALUE: "+str(template[2])+" WORSE ACCURACY:"+str(accuracy))
         board[index] = best_value
         if best_value > 0:
             cv2.rectangle(img_rgb,point[0],point[1],(255,0,0),2)
@@ -140,12 +137,8 @@ def normalizeBoard(board):
         val += 4;
     return result
 
-def releaseCamera():
-    camera.release()
-
 # Path should be empty if running module standalone
 if path == '':
     init()
     print(updateBoard())
     cv2.imwrite('res.png',img_rgb)
-    releaseCamera()
