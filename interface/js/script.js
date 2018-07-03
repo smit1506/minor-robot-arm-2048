@@ -43,7 +43,9 @@ function activate(origin) {
         console.log(data);
         const image = new Image();
         if (data == "1") {
-            document.getElementById('message').classList.remove('hidden');
+            const message = document.getElementById('message');
+            message.classList.remove('hidden');
+            message.innerHTML="Continue if there is a black grid over the play area."
             document.getElementById('happy-button-group').classList.remove('hidden');
             document.getElementById('sad-button-group').classList.add('hidden');
             image.src = 'template_field.png';

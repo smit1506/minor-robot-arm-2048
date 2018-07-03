@@ -11,14 +11,17 @@ rob = None
 positions = None
 
 def calibrate(position_name):
+    global positions
     positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
     positions.store(position_name)
 
 def init():
+    global positions
     #rob = urx.Robot("141.252.128.6")
     #print("Connected")
 
     sleep(0.2)  #leave some time to robot to process the setup commands
+    # don't assign same object to positions twice if already not None
     positions = positions or robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
     #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     #sleep(5)
