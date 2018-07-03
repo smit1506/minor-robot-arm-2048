@@ -8,6 +8,16 @@ def getMove(board, depth):
     score = 0
     best_move = 0
     false_counter = 0
+
+    empty_cells = []
+    for x in range(0,4):
+            for y in range(0,4):
+                if(board[x][y] == 0):
+                    empty_cells.append(0)
+    test_depth = len(empty_cells)
+    depth_map = [7,7,6,6,6,6,5,5,5,4,4,4,4,4,4,4]
+    depth = depth_map[test_depth]
+    
     for i in range(0, 4):       
         if(game_logic.main_loop(board,i)[0] == True):
             temp_board = game_logic.main_loop(board,i)[1]

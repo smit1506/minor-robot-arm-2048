@@ -21,28 +21,6 @@ def random():
     init_game()
     monte_carlo.auto_random(Game.board,250)
 
-def auto_alg_research():
-    average_time_per_move = []
-    average_time_per_game_over = []
-    times_2048 = 0
-    
-    for i in range(0,5):
-        result_set = auto_alg()
-        average_time_per_move.append(result_set[0])
-        average_time_per_game_over.append(result_set[1])
-        times_2048 += result_set[2]
-
-    print("/n -----------------------------------------------------")
-
-    print("FINAL TOTAL AVERAGE TIME PER MOVE:")
-    print(np.mean(average_time_per_move))
-    
-    print("FINAL TOTAL AVERAGE COMPLETION TIME EACH GAME:")
-    print(np.mean(average_time_per_game_over))
-    
-    print("FINAL TOTAL TIMES 2048:")
-    print(times_2048)
-
 def auto_alg():
     init_game()
     best_move = -2
@@ -96,23 +74,91 @@ def auto_alg():
     for x in range(0,4):
             for y in range(0,4):
                 if(Game.board[x][y] >= 2048):
-                   times_2048 += 1 
+                   times_2048 += 1
     return np.mean(timer_array),sum(timer_array),times_2048
+
+def auto_alg_research():
+    average_time_per_move = []
+    average_time_per_game_over = []
+    times_2048 = 0
     
-def smart_move():
-    move = weighted_table.getMove(Game.board,4)
-    if(move == -1):
-        return -1
-    #Game.board = game_logic.main_loop(Game.board,move)[1]
-    state = game_logic.main_loop(Game.board,move)
-    Game.board = state[1]
-    Game.score = Game.score + state[2]
-    print Game.board
-        
+    for i in range(0,10):
+        result_set = auto_alg()
+        average_time_per_move.append(result_set[0])
+        average_time_per_game_over.append(result_set[1])
+        times_2048 += result_set[2]
+
+    print("/n -----------------------------------------------------")
+
+    print("AVERAGE TIME PER MOVE:")
+    print(np.mean(average_time_per_move))
+    
+    print("AVERAGE COMPLETION TIME EACH GAME:")
+    print(np.mean(average_time_per_game_over))
+    
+    print("TIMES 2048 OUT OF 10 GAMES:")
+    print(times_2048)
+
+def smart_move_research():
+    result_set = []
+    average_time_per_move = []
+    average_time_per_game_over = []
+    times_2048 = 0
+    
+    for i in range(0,2):
+        result_set = auto_smart_move()
+        average_time_per_move.append(result_set[0])
+        average_time_per_game_over.append(result_set[1])
+        times_2048 += result_set[2]
+
+    print("/n -----------------------------------------------------")
+
+    print("AVERAGE TIME PER MOVE:")
+    print(np.mean(average_time_per_move))
+    
+    print("AVERAGE COMPLETION TIME EACH GAME:")
+    print(np.mean(average_time_per_game_over))
+    
+    print("TIMES 2048 OUT OF 10 GAMES:")
+    print(times_2048)
+
+
 def auto_smart_move():
+    timer_array = []
+    times_2048 = 0
+    game_over = False
+    
     init_game()
-    while smart_move() != -1:
-        continue
+
+    while(game_over == False):
+        start_timer = 0
+        end_timer = 0
+
+        start_timer = timer()
+        
+        move = weighted_table.getMove(Game.board,4)
+        if(move == -1):
+            break
+        state = game_logic.main_loop(Game.board,move)
+        Game.board = state[1]
+        Game.score = Game.score + state[2]
+        print Game.board
+        
+        end_timer = timer()
+        
+        print("TIME ELAPSED THIS MOVE:")
+        print(end_timer-start_timer)
+        print("-")
+        
+        timer_array.append(end_timer-start_timer)
+    
     print Game.board
     print Game.score
     print("Game over!")
+
+    for x in range(0,4):
+        for y in range(0,4):
+            if(Game.board[x][y] >= 2048):
+                times_2048 += 1 
+    
+    return np.mean(timer_array),sum(timer_array),times_2048

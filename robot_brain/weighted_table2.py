@@ -11,7 +11,7 @@ def getMove(board):
                 if(board[x][y] == 0):
                     empty_cells.append(0)
     test_depth = len(empty_cells)
-    depth_map = [5,4,4,3,3,2,2,2,2,2,2,2,2,2,2,2]
+    depth_map = [7,7,7,6,6,6,6,6,6,6,6,6,5,4,4,4]
     depth = depth_map[test_depth]
     
     score = 0
