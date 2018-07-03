@@ -78,6 +78,6 @@ get_routes = {
 
 post_routes = {
     '/sample/test': program.do_something_with_data,
-    '/field': program.set_field
+    '/field': program.set_field,
     '/calibrate': program.calibrate
 }

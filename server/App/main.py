@@ -19,7 +19,7 @@ def init():
     #print("Connected")
 
     sleep(0.2)  #leave some time to robot to process the setup commands
-    positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt")) if None
+    positions = positions or robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
     #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     #sleep(5)
     return vision.init()

@@ -29,12 +29,9 @@ class positions:
 
     def store(self, name, x=None, y=None, z=None, rx=None, ry=None, rz=None):
         if x is None:
-            print("Run store once")
-            #pos = rob.getl()
-            pos = range(0,6)
-            self.store(positionName, pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+            pos = rob.getl()
+            self.store(name, pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
             return
-        print("Run store twice")
         self.lines[name] = (x, y, z, rx, ry, rz)
         file = open(self.filePath, "w")
 
@@ -48,7 +45,7 @@ if __name__ == "__main__":
     #rec = positions(sys.argv[1])
     rec = positions(os.path.join(os.getcwd(), "positions.txt"))
 
-    #rob = urx.Robot("141.252.128.6")
+    rob = urx.Robot("141.252.128.6")
     sleep(0.2)  #leave some time to robot to process the setup commands
 
     while(True):

@@ -14,7 +14,7 @@ function setPosition(positionName){
         method: 'POST',
         body: positionName
     }).then(function(response) {
-      return response.text();
+        return response.text();
     }).then(function(data) {
 
         console.log(data);
@@ -25,6 +25,9 @@ function setPosition(positionName){
         else {
             console.log("Reselect rectangle");
         }
+    }).catch(function(error) {
+        console.log(error)
+    });
 }
 function finishCalibration() {
     document.getElementById('calibration-menu').classList.add('hidden');
