@@ -5,20 +5,23 @@ from robot_controls import robot_positions
 from robot_vision import vision
 from robot_brain import weighted_table
 
-#rob = urx.Robot("141.252.128.6")
-#print("Connected")
-
-sleep(0.2)  #leave some time to robot to process the setup commands
 path = '' if "App" in os.getcwd() else 'App'
-positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
-
 board = None
+rob = None
+positions = None
 
-def main():
+def init():
+    #rob = urx.Robot("141.252.128.6")
+    #print("Connected")
 
+    sleep(0.2)  #leave some time to robot to process the setup commands
+    positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
     #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     #sleep(5)
     vision.init()
+
+def run():
+
     direction = None
     while (direction != -1):
         #direction = getDirection()
@@ -63,6 +66,6 @@ def getDirection():
     print(board)
     return weighted_table.getMove(board, 4)
 
-
-main()
-print("Done")
+if 'App' not in path:
+    init()
+    run()

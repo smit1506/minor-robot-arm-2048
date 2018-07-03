@@ -28,11 +28,20 @@ class ProgramEntry:
         response.add_body(content_type['text'], 'Hello world')
         return response
 
+    def init(self):
+        print('Initializing...')
+        response = Response(200)
+        #response.add_header('Access-Control-Allow-Origin','*')
+        main.init()
+        response.add_body(content_type['text'], '1')
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
+        return response
+
     def run_program(self):
         print('Running program')
         response = Response(200)
         #response.add_header('Access-Control-Allow-Origin','*')
-        main.init()
+        main.run()
         response.add_body(content_type['text'], '1')
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response
@@ -44,6 +53,7 @@ program = ProgramEntry()
 # bind routes to functions
 get_routes = {
     '/sample/test': program.do_something,
+    '/init': program.init,
     '/run': program.run_program
 }
 

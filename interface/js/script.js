@@ -10,7 +10,7 @@ function activate(origin) {
     hide(document.getElementById('init'));
     const canvas = document.getElementById('canvas');
     canvas.classList.remove('hidden');
-    fetch('http://localhost:8080/run').then(function(response) {
+    fetch('http://localhost:8080/init').then(function(response) {
       return response.text();
     }).then(function(data) {
         if (data == "1") {
