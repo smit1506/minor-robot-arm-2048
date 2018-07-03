@@ -29,7 +29,7 @@ def init():
     img_rgb = getCameraImage()
     tiles = os.listdir(tile_path)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    field_template = cv2.imread(os.path.join(template_path, 'template_field.png'), 0)
+    field_template = cv2.imread(os.path.join(template_path, 'template_field_cropped.png'), 0)
     if not getField(field_template):
         return False
     print "Found field"
@@ -106,11 +106,13 @@ def getFieldTemplate(rct):
     if (sum(rct) == 0):
         return False
     img_crop = img_gray[int(rct[1]):int(rct[1]+rct[3]), int(rct[0]):int(rct[0]+rct[2])]
-    cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
-    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'),img_crop)
+    cv2.imwrite(os.path.join(template_path, 'template_field_cropped.png'), img_crop)
+    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field_cropped.png'),img_crop)
     return getField(img_crop)
 
 def getField(field_template):
+    if field_template is None:
+        return False
     block_width, block_height = field_template.shape[::-1]
     block_width /= 4
     block_height /= 4

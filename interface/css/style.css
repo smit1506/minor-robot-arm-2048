@@ -20,6 +20,10 @@ html, body {
     border-radius: 50%;
     cursor: pointer;
 }
+
+#confirm-button {
+    margin-left: 5px;
+}
 img {
     width: 100%
 }
