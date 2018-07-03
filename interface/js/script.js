@@ -42,6 +42,10 @@ function activate(origin) {
     });
 }
 
+function setFieldTemplate() {
+    console.log(document.getElementById('fieldTemplate').dataset.rct);
+}
+
 function run() {
     document.getElementById('confirm-button').classList.add('hidden');
     const canvas = document.getElementById('canvas');
