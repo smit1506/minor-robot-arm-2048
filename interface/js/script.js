@@ -68,6 +68,33 @@ function activate(origin) {
     });
 }
 
+function fetchImage(){
+    fetch('http://localhost:8080/image').then(function(response) {
+        return response.text();
+    }).then(function(data) {
+
+        console.log(data);
+        // temp
+        if (data == "1") {
+
+            const canvas = document.getElementById('canvas');
+            const image = new Image();
+            image.src = 'cam.png';
+            image.onload = function(){
+                const context = canvas.getContext('2d');
+                context.imageSmoothingEnabled = false;
+                context.drawImage(image, 0, 0);
+            }
+            console.log("Success!");
+        }
+        else {
+            console.log("Reselect rectangle");
+        }
+    }).catch(function(error) {
+        console.log(error)
+    });
+}
+
 function redrawFieldTemplate() {
     console.log("click");
     const canvas = document.getElementById('canvas');

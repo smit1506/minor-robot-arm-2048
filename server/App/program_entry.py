@@ -48,6 +48,14 @@ class ProgramEntry:
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response
 
+    def fetch_image(self):
+        print('Fetching image')
+        response = Response(200)
+        main.getCameraImage()
+        response.add_body(content_type['text'], '1')
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
+        return response
+
     def run_program(self):
         print('Running program')
         response = Response(200)
@@ -73,7 +81,7 @@ get_routes = {
     '/sample/test': program.do_something,
     '/init': program.init,
     '/run': program.run_program,
-    '/field': program.set_field
+    '/image': program.fetch_image
 }
 
 post_routes = {

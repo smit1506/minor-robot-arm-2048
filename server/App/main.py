@@ -77,6 +77,9 @@ def getDirection():
 def setFieldTemplate(rct):
     return vision.getFieldTemplate(rct)
 
+def getCameraImage():
+    vision.getCameraImage()
+
 if 'App' not in path:
     init()
     run()
