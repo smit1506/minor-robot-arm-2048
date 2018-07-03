@@ -18,32 +18,70 @@ function activate(origin) {
     }).then(function(data) {
         console.log(data);
         const image = new Image();
-        // if (data == "1") {
-
-                // document.getElementById('happy-button-group').classList.remove('hidden');
-                // document.getElementById('sad-button-group').classList.add('hidden');
-        //     image.src = 'template_field.png';
-        // }
-        //else if (data == "0") {
+        if (data == "1") {
+            document.getElementById('message').classList.remove('hidden');
+            document.getElementById('happy-button-group').classList.remove('hidden');
+            document.getElementById('sad-button-group').classList.add('hidden');
+            image.src = 'template_field.png';
+        }
+        else if (data == "0") {
             drawRectangle = true;
             document.getElementById('message').classList.remove('hidden');
             document.getElementById('sad-button-group').classList.remove('hidden');
             document.getElementById('happy-button-group').classList.add('hidden');
             canvas.classList.add('drawable');
             image.src = 'cam.png';
-        //}
+        }
         image.onload = function(){
             const context = canvas.getContext('2d');
             context.imageSmoothingEnabled = false;
             context.drawImage(image, 0, 0);
         }
     }).catch(function(error) {
-      console.log(error)
+        console.log(error)
     });
 }
 
+function redrawFieldTemplate() {
+    console.log("click");
+    const canvas = document.getElementById('canvas');
+    const image = new Image();
+    drawRectangle = true;
+    document.getElementById('message').classList.remove('hidden');
+    document.getElementById('sad-button-group').classList.remove('hidden');
+    document.getElementById('happy-button-group').classList.add('hidden');
+    canvas.classList.add('drawable');
+    image.src = 'cam.png';
+    image.onload = function(){
+        const context = canvas.getContext('2d');
+        context.imageSmoothingEnabled = false;
+        context.drawImage(image, 0, 0);
+    }
+}
+
 function setFieldTemplate() {
-    console.log(document.getElementById('fieldTemplate').dataset.rct);
+    let rct = document.getElementById('fieldTemplate').dataset.rct
+    fetch('http://localhost:8080/field', {
+        method: 'POST',
+        body: rct
+    }).then(function(response) {
+      return response.text();
+    }).then(function(data) {
+        console.log(data);
+
+        // const context = canvas.getContext('2d');
+        // context.clearRect(0, 0, canvas.width, canvas.height);
+        // const image = new Image();
+        // if (data == "1") {
+        //     image.src = 'cam.png';
+        // }
+        // image.onload = function(){
+        //     context.imageSmoothingEnabled = false;
+        //     context.drawImage(image, 0, 0);
+        // }
+    }).catch(function(error) {
+      console.log(error)
+    });
 }
 
 function run() {

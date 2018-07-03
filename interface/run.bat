@@ -1,2 +1,2 @@
 start chrome http://localhost:8000
-python -m SimpleHTTPServer
+C:\Python27amd64\python.exe -m SimpleHTTPServer

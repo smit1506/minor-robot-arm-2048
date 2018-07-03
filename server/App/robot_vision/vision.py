@@ -101,11 +101,20 @@ def getFieldTemplate(image):
     cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
     return img_crop
 
-def getField(field_emplate):
-    block_width, block_height = field_emplate.shape[::-1]
+def getFieldTemplate(rct):
+    print(rct)
+    if (sum(rct) == 0):
+        return False
+    img_crop = img_rgb[int(rct[1]):int(rct[1]+rct[3]), int(rct[0]):int(rct[0]+rct[2])]
+    cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
+    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'),img_crop)
+    return getField(img_rgb)
+
+def getField(field_template):
+    block_width, block_height = field_template.shape[::-1]
     block_width /= 4
     block_height /= 4
-    res = cv2.matchTemplate(img_gray,field_emplate,cv2.TM_CCOEFF_NORMED)
+    res = cv2.matchTemplate(img_gray,field_template,cv2.TM_CCOEFF_NORMED)
     threshold = 0.6
     loc = np.where(res >= threshold)
     loc_list = zip(*loc[::-1])
@@ -133,6 +142,7 @@ def drawGrid(grid):
         cv2.rectangle(img_rgb,pt[0], pt[1], (0,0,0), 2)
     print "Drawing template field"
     print (os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'))
+    cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_rgb)
     cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'),img_rgb)
     # cv2.imshow('drawGrid',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):

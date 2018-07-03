@@ -66,6 +66,10 @@ def getDirection():
     print(board)
     return weighted_table.getMove(board, 4)
 
+
+def setFieldTemplate(rct):
+    return vision.getFieldTemplate(rct)
+
 if 'App' not in path:
     init()
     run()

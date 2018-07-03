@@ -8,6 +8,8 @@ from Networking.response import Response
 # Enum with preconfigured contentTypes
 from Networking.content_types import content_type
 
+import json
+
 from App import main
 
 class ProgramEntry:
@@ -31,7 +33,6 @@ class ProgramEntry:
     def init(self):
         print('Initializing...')
         response = Response(200)
-        #response.add_header('Access-Control-Allow-Origin','*')
         value = '0'
         if main.init():
             print "Found field, returning 1"
@@ -43,12 +44,19 @@ class ProgramEntry:
     def run_program(self):
         print('Running program')
         response = Response(200)
-        #response.add_header('Access-Control-Allow-Origin','*')
         main.run()
         response.add_body(content_type['text'], '1')
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response
 
+    def set_field(self, data_type, data):
+        response = Response(200)
+        value = '0'
+        if main.setFieldTemplate(data.split(",")):
+            value = '1'
+        response.add_body(content_type['text'], value)
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
+        return response
 
 # make instance of your class
 program = ProgramEntry()
@@ -57,9 +65,11 @@ program = ProgramEntry()
 get_routes = {
     '/sample/test': program.do_something,
     '/init': program.init,
-    '/run': program.run_program
+    '/run': program.run_program,
+    '/field': program.set_field
 }
 
 post_routes = {
-    '/sample/test': program.do_something_with_data
+    '/sample/test': program.do_something_with_data,
+    '/field': program.set_field
 }
