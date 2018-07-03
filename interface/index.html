@@ -9,7 +9,10 @@
     <body>
         <div id="init" class="content d-flex">
             <div class="d-inline-block mx-auto my-auto">
-                <button type="button" class="big-btn btn btn-lg btn-danger" onclick="calibrate(this)">Calibrate</button>
+                <div id="firstButtons">
+                    <button type="button" class="big-btn btn btn-lg btn-danger" onclick="calibrate(this)">Calibrate</button>
+                    <button type="button" class="big-btn btn btn-lg btn-success" onclick="skipCalibration(this)">Skip</button>
+                </div>
                 <div id="calibration-menu" class="hidden">
                     <div class="d-flex">
                         <div class="d-inline-block mx-auto my-auto">

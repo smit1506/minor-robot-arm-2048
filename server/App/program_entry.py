@@ -52,7 +52,7 @@ class ProgramEntry:
     def set_field(self, data_type, data):
         response = Response(200)
         value = '0'
-        if main.setFieldTemplate(data.split(",")):
+        if main.setFieldTemplate(map(int, data.split(","))):
             value = '1'
         response.add_body(content_type['text'], value)
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")

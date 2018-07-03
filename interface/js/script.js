@@ -2,8 +2,12 @@ let drawRectangle = false;
 const templateFieldOptions = {};
 
 function calibrate(origin){
-    remove(origin);
+    remove(document.getElementById('firstButtons'));
     document.getElementById('calibration-menu').classList.remove('hidden');
+}
+function skipCalibration(origin) {
+    remove(document.getElementById('firstButtons'));
+    document.getElementById('start-button').classList.remove('hidden');
 }
 function finishCalibration() {
     document.getElementById('calibration-menu').classList.add('hidden');
@@ -67,7 +71,17 @@ function setFieldTemplate() {
     }).then(function(response) {
       return response.text();
     }).then(function(data) {
+
         console.log(data);
+        // temp
+        if (data == "1") {
+            console.log("Success!");
+        }
+        else {
+            console.log("Reselect rectangle");
+        }
+
+
 
         // const context = canvas.getContext('2d');
         // context.clearRect(0, 0, canvas.width, canvas.height);

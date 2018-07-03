@@ -89,26 +89,26 @@ def getMatches(templates,grid):
         index += 1
 
 
-def getFieldTemplate(image):
-    r = cv2.selectROI("Image",image,False,False)
-    if (sum(r) == 0):
-        print ("Nothing selected. Restart the script.")
-        exit(0)
-    img_crop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
-    if (img_crop == []):
-        print ("IMG CROP")
-        print (img_crop)
-    cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
-    return img_crop
+# def getFieldTemplate(image):
+#     r = cv2.selectROI("Image",image,False,False)
+#     if (sum(r) == 0):
+#         print ("Nothing selected. Restart the script.")
+#         exit(0)
+#     img_crop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
+#     if (img_crop == []):
+#         print ("IMG CROP")
+#         print (img_crop)
+#     cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
+#     return img_crop
 
 def getFieldTemplate(rct):
     print(rct)
     if (sum(rct) == 0):
         return False
-    img_crop = img_rgb[int(rct[1]):int(rct[1]+rct[3]), int(rct[0]):int(rct[0]+rct[2])]
+    img_crop = img_gray[int(rct[1]):int(rct[1]+rct[3]), int(rct[0]):int(rct[0]+rct[2])]
     cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
     cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'),img_crop)
-    return getField(img_rgb)
+    return getField(img_crop)
 
 def getField(field_template):
     block_width, block_height = field_template.shape[::-1]
