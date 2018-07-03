@@ -38,8 +38,16 @@
                 </div>
             </div>
         </div>
-        <canvas id="canvas" class="hidden" height="720" width="1280"></canvas>
+        <div id="canvas-container" class="container-fluid">
+            <canvas id="canvas" class="hidden" height="720" width="1280"></canvas>
+        </div>
+        <p id="message" class="text-center hidden">Draw a rectangle over the 2048 field.</p>
 
+        <div class="d-flex">
+            <div class="d-inline-block mx-auto">
+                <button type="button" class="big-btn btn btn-lg btn-warning">Redraw</button><button type="button" id="done-button" class="big-btn btn btn-lg btn-success" onclick="run">Done</button>
+            </div>
+        </div>
         <script src="js/script.js" charset="utf-8"></script>
     </body>
 </html>

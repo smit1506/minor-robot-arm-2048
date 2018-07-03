@@ -18,7 +18,7 @@ def init():
     positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
     #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     #sleep(5)
-    vision.init()
+    return vision.init()
 
 def run():
 

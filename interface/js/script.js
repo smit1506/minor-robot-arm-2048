@@ -13,14 +13,42 @@ function activate(origin) {
     fetch('http://localhost:8080/init').then(function(response) {
       return response.text();
     }).then(function(data) {
+        console.log(data);
+        const image = new Image();
         if (data == "1") {
-            image = new Image();
+            image.src = 'template_field.png';
+        }
+        else if (data == "0") {
+            document.getElementById('message').classList.remove('hidden');
             image.src = 'cam.png';
-            image.onload = function(){
-                context = canvas.getContext('2d');
-                context.imageSmoothingEnabled = false;
-                context.drawImage(image, 0, 0);
-            }
+        }
+        image.onload = function(){
+            const context = canvas.getContext('2d');
+            context.imageSmoothingEnabled = false;
+            context.drawImage(image, 0, 0);
+        }
+    }).catch(function(error) {
+      console.log(error)
+    });
+}
+
+function run() {
+    hide(document.getElementById('done-button'));
+    const canvas = document.getElementById('canvas');
+    fetch('http://localhost:8080/run').then(function(response) {
+      return response.text();
+    }).then(function(data) {
+        console.log(data);
+
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        const image = new Image();
+        if (data == "1") {
+            image.src = 'cam.png';
+        }
+        image.onload = function(){
+            context.imageSmoothingEnabled = false;
+            context.drawImage(image, 0, 0);
         }
     }).catch(function(error) {
       console.log(error)

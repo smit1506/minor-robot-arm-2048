@@ -30,7 +30,10 @@ def init():
     tiles = os.listdir(tile_path)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     field_template = cv2.imread(os.path.join(template_path, 'template_field.png'), 0)
-    getField(field_template)
+    if not getField(field_template):
+        return False
+    print "Found field"
+    return True
 
 def updateBoard():
     global img_rgb, img_gray
@@ -49,7 +52,7 @@ def getCameraImage():
     # UNCOMMENT THIS WHEN ROBOT IS ON
     #_, image = cv2.VideoCapture(url).read()
     image = cv2.imread(os.path.join(path, 'cam.png'))
-    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, 'interface', 'cam.png'),image)
+    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'cam.png'),image)
     return image
 
 def getAllMatches():
@@ -108,6 +111,7 @@ def getField(field_emplate):
     loc_list = zip(*loc[::-1])
     if len(loc_list) == 0:
         print("No field template found. Select new template.")
+        return False
         #return getField(getFieldTemplate(img_gray))
     pt = loc_list[0]
 
@@ -121,11 +125,15 @@ def getField(field_emplate):
 
 
     drawGrid(grid)
+    return True
 
 
 def drawGrid(grid):
     for pt in grid:
         cv2.rectangle(img_rgb,pt[0], pt[1], (0,0,0), 2)
+    print "Drawing template field"
+    print (os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'))
+    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'),img_rgb)
     # cv2.imshow('drawGrid',img_rgb)
     # if cv2.waitKey(30000) & 0xFF == ord('q'):
     #     sleep(1)
