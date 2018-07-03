@@ -8,6 +8,7 @@ from Networking.response import Response
 # Enum with preconfigured contentTypes
 from Networking.content_types import content_type
 
+from App import main
 
 class ProgramEntry:
     # do on get
@@ -31,6 +32,7 @@ class ProgramEntry:
         print('Running program')
         response = Response(200)
         #response.add_header('Access-Control-Allow-Origin','*')
+        main.init()
         response.add_body(content_type['text'], '1')
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response

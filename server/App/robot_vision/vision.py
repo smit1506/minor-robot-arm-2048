@@ -11,9 +11,10 @@ img_gray = None
 tiles = None
 ip = "141.252.128.6"
 url = "http://" + ip + ":4242/current.jpg?type=color"
-path = '' if "robot_vision" in os.getcwd() else 'robot_vision/'
-template_path = path + 'templates'
-tile_path = template_path + '/tiles'
+cwd = os.getcwd()
+path = cwd if "robot_vision" in os.getcwd() else os.path.join(cwd, 'robot_vision')
+template_path = os.path.join(path, 'templates')
+tile_path = os.path.join(template_path, 'tiles')
 tile_info = [0] + [1 << i for i in range(1, 15)]
 
 grid = []
@@ -21,15 +22,16 @@ board = [0] * 16
 
 def init():
     global  img_rgb, img_gray, tiles
-
+    print path
     # UNCOMMENT THIS WHEN ROBOT IS ON
     #_ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     sleep(3)
     img_rgb  = getCameraImage()
 
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     tiles = os.listdir(tile_path)
-    field_template = cv2.imread(template_path + '/template_field.png', 0)
+    print tiles
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    field_template = cv2.imread(os.path.join(template_path, 'template_field.png'), 0)
     getField(field_template)
 
 def updateBoard():
@@ -48,15 +50,15 @@ def getCameraImage():
     # return cv2.imread(path + 'cam.png')
     # UNCOMMENT THIS WHEN ROBOT IS ON
     #_, image = cv2.VideoCapture(url).read()
-    image = cv2.imread(path + 'cam.png')
-    cv2.imwrite(path + '../interface/' + 'cam.png',image)
+    image = cv2.imread(os.path.join(path, 'cam.png'))
+    cv2.imwrite(os.path.join(path, os.pardir, os.pardir, 'interface', 'cam.png'),image)
     return image
 
 def getAllMatches():
     templates = []
     index = 0
     for tile in tiles:
-        tile_template = cv2.imread(tile_path + '/' + tile, 0)
+        tile_template = cv2.imread(os.path.join(tile_path, tile), 0)
         templates.append((tile_template, tile_info[index]))
         index += 1
     getMatches(templates,grid)
@@ -95,7 +97,7 @@ def getFieldTemplate(image):
     if (img_crop == []):
         print ("IMG CROP")
         print (img_crop)
-    cv2.imwrite(template_path + '/template_field.png', img_crop)
+    cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
     return img_crop
 
 def getField(field_emplate):
@@ -108,7 +110,7 @@ def getField(field_emplate):
     loc_list = zip(*loc[::-1])
     if len(loc_list) == 0:
         print("No field template found. Select new template.")
-        return getField(getFieldTemplate(img_gray))
+        #return getField(getFieldTemplate(img_gray))
     pt = loc_list[0]
 
     next_pt = pt
@@ -126,9 +128,9 @@ def getField(field_emplate):
 def drawGrid(grid):
     for pt in grid:
         cv2.rectangle(img_rgb,pt[0], pt[1], (0,0,0), 2)
-    cv2.imshow('drawGrid',img_rgb)
-    if cv2.waitKey(30000) & 0xFF == ord('q'):
-        sleep(1)
+    # cv2.imshow('drawGrid',img_rgb)
+    # if cv2.waitKey(30000) & 0xFF == ord('q'):
+    #     sleep(1)
 
 
 def normalizeBoard(board):
@@ -140,7 +142,7 @@ def normalizeBoard(board):
     return result
 
 # Path should be empty if running module standalone
-if path == '':
+if path == cwd:
     init()
     print(updateBoard())
-    cv2.imwrite('res.png',img_rgb)
+    cv2.imwrite(os.path.join(path, 'res.png'),img_rgb)
