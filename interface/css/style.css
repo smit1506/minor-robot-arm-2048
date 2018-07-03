@@ -27,11 +27,22 @@ img {
 #canvas-container {
     margin-bottom: 16px;
     height: 720px;
+    pointer-events: none;
 }
 #canvas {
+    pointer-events: auto;
     position: absolute;
     left: 50%;
     margin-left: -640px;
     border:1px solid #000000;
     clear: both;
+}
+
+.drawable {
+    cursor: crosshair;
+}
+
+.rectangle {
+    border: 1px solid #FF0000;
+    position: absolute;
 }

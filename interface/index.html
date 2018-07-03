@@ -45,9 +45,15 @@
 
         <div class="d-flex">
             <div class="d-inline-block mx-auto">
-                <button type="button" class="big-btn btn btn-lg btn-warning">Redraw</button><button type="button" id="done-button" class="big-btn btn btn-lg btn-success" onclick="run">Done</button>
+                <span id="happy-button-group" class="hidden">
+                    <button type="button" class="big-btn btn btn-lg btn-warning">Redraw</button><button type="button" id="confirm-button" class="big-btn btn btn-lg btn-success" onclick="run">Done</button>
+                </span>
+                <span id="sad-button-group" class="hidden">
+                    <button type="button" id="done-button" class="big-btn btn btn-lg btn-success" onclick="setFieldTemplate()">Done</button>
+                </span>
             </div>
         </div>
         <script src="js/script.js" charset="utf-8"></script>
+        <script src="js/draw.js" charset="utf-8"></script>
     </body>
 </html>

@@ -1,5 +1,8 @@
+let drawRectangle = false;
+const templateFieldOptions = {};
+
 function calibrate(origin){
-    hide(origin);
+    remove(origin);
     document.getElementById('calibration-menu').classList.remove('hidden');
 }
 function finishCalibration() {
@@ -7,7 +10,7 @@ function finishCalibration() {
     document.getElementById('start-button').classList.remove('hidden');
 }
 function activate(origin) {
-    hide(document.getElementById('init'));
+    remove(document.getElementById('init'));
     const canvas = document.getElementById('canvas');
     canvas.classList.remove('hidden');
     fetch('http://localhost:8080/init').then(function(response) {
@@ -15,13 +18,20 @@ function activate(origin) {
     }).then(function(data) {
         console.log(data);
         const image = new Image();
-        if (data == "1") {
-            image.src = 'template_field.png';
-        }
-        else if (data == "0") {
+        // if (data == "1") {
+
+                // document.getElementById('happy-button-group').classList.remove('hidden');
+                // document.getElementById('sad-button-group').classList.add('hidden');
+        //     image.src = 'template_field.png';
+        // }
+        //else if (data == "0") {
+            drawRectangle = true;
             document.getElementById('message').classList.remove('hidden');
+            document.getElementById('sad-button-group').classList.remove('hidden');
+            document.getElementById('happy-button-group').classList.add('hidden');
+            canvas.classList.add('drawable');
             image.src = 'cam.png';
-        }
+        //}
         image.onload = function(){
             const context = canvas.getContext('2d');
             context.imageSmoothingEnabled = false;
@@ -33,7 +43,7 @@ function activate(origin) {
 }
 
 function run() {
-    hide(document.getElementById('done-button'));
+    document.getElementById('confirm-button').classList.add('hidden');
     const canvas = document.getElementById('canvas');
     fetch('http://localhost:8080/run').then(function(response) {
       return response.text();
@@ -55,6 +65,6 @@ function run() {
     });
 }
 
-function hide(element) {
+function remove(element) {
     element.parentNode.removeChild(element);
 }
