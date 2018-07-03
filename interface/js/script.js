@@ -19,7 +19,6 @@ function activate(origin) {
             image.onload = function(){
                 context = canvas.getContext('2d');
                 context.imageSmoothingEnabled = false;
-                //context.drawImage(image, 0, 0, 960, 540);
                 context.drawImage(image, 0, 0);
             }
         }
