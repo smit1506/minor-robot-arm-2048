@@ -12,7 +12,8 @@ tiles = None
 ip = "141.252.128.6"
 url = "http://" + ip + ":4242/current.jpg?type=color"
 cwd = os.getcwd()
-path = cwd if "robot_vision" in os.getcwd() else os.path.join(cwd, 'robot_vision')
+cwd = cwd if 'App' in cwd else os.path.join(cwd, 'App')
+path = cwd if "robot_vision" in cwd else os.path.join(cwd, 'robot_vision')
 template_path = os.path.join(path, 'templates')
 tile_path = os.path.join(template_path, 'tiles')
 tile_info = [0] + [1 << i for i in range(1, 15)]
@@ -22,14 +23,11 @@ board = [0] * 16
 
 def init():
     global  img_rgb, img_gray, tiles
-    print path
     # UNCOMMENT THIS WHEN ROBOT IS ON
     #_ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     sleep(3)
-    img_rgb  = getCameraImage()
-
+    img_rgb = getCameraImage()
     tiles = os.listdir(tile_path)
-    print tiles
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     field_template = cv2.imread(os.path.join(template_path, 'template_field.png'), 0)
     getField(field_template)
