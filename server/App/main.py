@@ -10,12 +10,16 @@ board = None
 rob = None
 positions = None
 
+def calibrate(position_name):
+    positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
+    positions.store(position_name)
+
 def init():
     #rob = urx.Robot("141.252.128.6")
     #print("Connected")
 
     sleep(0.2)  #leave some time to robot to process the setup commands
-    positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
+    positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt")) if None
     #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     #sleep(5)
     return vision.init()

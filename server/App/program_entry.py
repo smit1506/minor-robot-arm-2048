@@ -30,6 +30,13 @@ class ProgramEntry:
         response.add_body(content_type['text'], 'Hello world')
         return response
 
+    def calibrate(self, data_type, data):
+        response = Response(200)
+        main.calibrate(data)
+        response.add_body(content_type['text'], '1')
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
+        return response
+
     def init(self):
         print('Initializing...')
         response = Response(200)
@@ -72,4 +79,5 @@ get_routes = {
 post_routes = {
     '/sample/test': program.do_something_with_data,
     '/field': program.set_field
+    '/calibrate': program.calibrate
 }

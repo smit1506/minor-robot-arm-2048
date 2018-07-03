@@ -9,6 +9,23 @@ function skipCalibration(origin) {
     remove(document.getElementById('firstButtons'));
     document.getElementById('start-button').classList.remove('hidden');
 }
+function setPosition(positionName){
+    fetch('http://localhost:8080/calibrate', {
+        method: 'POST',
+        body: positionName
+    }).then(function(response) {
+      return response.text();
+    }).then(function(data) {
+
+        console.log(data);
+        // temp
+        if (data == "1") {
+            console.log("Success!");
+        }
+        else {
+            console.log("Reselect rectangle");
+        }
+}
 function finishCalibration() {
     document.getElementById('calibration-menu').classList.add('hidden');
     document.getElementById('start-button').classList.remove('hidden');
