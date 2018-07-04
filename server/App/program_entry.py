@@ -56,10 +56,18 @@ class ProgramEntry:
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response
 
-    def run_program(self):
+    def auto_move(self):
         print('Running program')
         response = Response(200)
-        main.run()
+        data = main.run()
+        response.add_body(content_type['json'], json.dumps(data))
+        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
+        return response
+
+    def move(self, data_type, data):
+        response = Response(200)
+        if (data == 'start'):
+            main.goToStart()
         response.add_body(content_type['text'], '1')
         response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
         return response
@@ -80,12 +88,13 @@ program = ProgramEntry()
 get_routes = {
     '/sample/test': program.do_something,
     '/init': program.init,
-    '/run': program.run_program,
+    '/run': program.auto_move,
     '/image': program.fetch_image
 }
 
 post_routes = {
     '/sample/test': program.do_something_with_data,
     '/field': program.set_field,
-    '/calibrate': program.calibrate
+    '/calibrate': program.calibrate,
+    '/move': program.move
 }

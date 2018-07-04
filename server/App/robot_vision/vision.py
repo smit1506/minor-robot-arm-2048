@@ -44,8 +44,10 @@ def updateBoard():
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     # cv2.imshow("board",img_gray)
     # cv2.waitKey(0)
-    getAllMatches()
-    return normalizeBoard(board)
+    if getAllMatches():
+        return normalizeBoard(board)
+    else:
+        return None
 
 def getCameraImage():
     # return cv2.imread(path + 'cam.png')
@@ -62,8 +64,9 @@ def getAllMatches():
         tile_template = cv2.imread(os.path.join(tile_path, tile), 0)
         templates.append((tile_template, tile_info[index]))
         index += 1
-    getMatches(templates,grid)
-
+    if not getMatches(templates,grid):
+        return False
+    return True
 
 def getMatches(templates,grid):
     threshold = 0.1
@@ -83,12 +86,13 @@ def getMatches(templates,grid):
             if best_accuracy < accuracy:
                 best_accuracy = accuracy
                 best_value = template[1]
+        if len(board) < index:
+            return False
         board[index] = best_value
         if best_value > 0:
             cv2.rectangle(img_rgb,point[0],point[1],(255,0,0),2)
         index += 1
-
-
+    return True
 # def getFieldTemplate(image):
 #     r = cv2.selectROI("Image",image,False,False)
 #     if (sum(r) == 0):

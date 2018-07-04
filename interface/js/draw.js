@@ -28,7 +28,7 @@ function initDraw(canvas) {
 
     canvas.onmousedown = function (e) {
         if (mouseDown == false && drawRectangle){
-            if (element !== null) {
+            if (element != null) {
                 remove(element);
             }
             mouseDown = true;
@@ -37,7 +37,7 @@ function initDraw(canvas) {
             element = document.createElement('div');
             document.getElementById('canvas-container').appendChild(element);
             element.className = 'rectangle';
-            element.id = 'fieldTemplate';
+            element.id = 'field-template';
             element.style.left = mouse.x + 'px';
             element.style.top = mouse.y + 'px';
             console.log("Click down");

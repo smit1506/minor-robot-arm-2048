@@ -44,16 +44,20 @@
         <div id="canvas-container" class="container-fluid">
             <canvas id="canvas" class="hidden" height="720" width="1280"></canvas>
         </div>
-        <p id="message" class="text-center hidden">Draw a rectangle over the 2048 field.</p>
+        <p id="message" class="text-center hidden">Doing stuff...</p>
+        <p id="field-placeholder" class="text-center hidden"></p>
 
         <div class="d-flex">
             <div class="d-inline-block mx-auto">
-                <button type="button" class="big-btn btn btn-lg btn-primary" onclick="fetchImage()">Fetch new image</button>
+                <button id="fetch-image-button" type="button" class="big-btn btn btn-lg btn-primary hidden" onclick="fetchImage()">Fetch new image</button>
                 <span id="happy-button-group" class="hidden">
-                    <button type="button" class="big-btn btn btn-lg btn-warning" onclick="redrawFieldTemplate()">Redraw</button><button type="button" id="confirm-button" class="big-btn btn btn-lg btn-success" onclick="run()">Continue</button>
+                    <button type="button" class="big-btn btn btn-lg btn-warning" onclick="redrawFieldTemplate()">Redraw</button><button type="button" id="confirm-button" class="big-btn btn btn-lg btn-success" onclick="start()">Continue</button>
                 </span>
                 <span id="sad-button-group" class="hidden">
                     <button type="button" id="done-button" class="big-btn btn btn-lg btn-success" onclick="setFieldTemplate()">Done</button>
+                </span>
+                <span id="running-button-group" class="hidden">
+                    <button type="button" class="big-btn btn btn-lg btn-warning" onclick="stopAndRedrawFieldTemplate()">Redraw</button><button type="button" id="confirm-button" class="big-btn btn btn-lg btn-danger" onclick="stop()">Stop</button>
                 </span>
             </div>
         </div>

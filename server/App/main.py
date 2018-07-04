@@ -9,7 +9,7 @@ path = '' if "App" in os.getcwd() else 'App'
 board = None
 rob = None
 positions = None
-
+direction = None
 def calibrate(position_name):
     global positions
     positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
@@ -27,9 +27,7 @@ def init():
     #sleep(5)
     return vision.init()
 
-def run():
-
-    direction = None
+def run_standalone():
     while (direction != -1):
         #direction = getDirection()
         #print(direction)
@@ -42,6 +40,12 @@ def run():
 
     #done
     vision.releaseCamera()
+
+def run():
+    global direction
+    direction = getDirection()
+    doMove(direction)
+    return (direction, board)
 
 def doMove(direction):
 
@@ -70,9 +74,14 @@ def getDirection():
     #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     sleep(2)
     board = vision.updateBoard()
+    if board is None:
+        return -2
     print(board)
     return weighted_table.getMove(board, 4)
 
+def goToStart():
+    #rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
+    print("Moving to start")
 
 def setFieldTemplate(rct):
     return vision.getFieldTemplate(rct)
@@ -82,4 +91,4 @@ def getCameraImage():
 
 if 'App' not in path:
     init()
-    run()
+    run_standalone()
