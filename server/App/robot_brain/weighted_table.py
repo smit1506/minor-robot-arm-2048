@@ -15,10 +15,10 @@ def getMove(board, depth):
                 if(board[x][y] == 0):
                     empty_cells.append(0)
     test_depth = len(empty_cells)
-    depth_map = [7,7,6,6,6,6,5,5,5,4,4,4,4,4,4,4]
+    depth_map = [6,5,5,5,4,4,4,4,4,4,3,3,3,3,3,3]
     depth = depth_map[test_depth]
-    
-    for i in range(0, 4):       
+
+    for i in range(0, 4):
         if(game_logic.main_loop(board,i)[0] == True):
             temp_board = game_logic.main_loop(board,i)[1]
             temp_score = getScore(temp_board, depth, 0)
@@ -29,7 +29,7 @@ def getMove(board, depth):
             false_counter += 1
             if(false_counter == 4):
                 return -1
-            
+
     return best_move
 
 def getScore(board, depth, score):
@@ -39,7 +39,7 @@ def getScore(board, depth, score):
             for k in range(0, 4):
                 score += weight_board[j][k] * board[j][k]
         return score
-    
+
     for i in range(0, 4):
         if(game_logic.main_loop(board,i)[0] == True):
             temp_board = game_logic.main_loop(board,i)[1]

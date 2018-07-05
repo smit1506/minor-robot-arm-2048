@@ -82,7 +82,8 @@ function activate(origin) {
             document.getElementById('sad-button-group').classList.remove('hidden');
             document.getElementById('happy-button-group').classList.add('hidden');
             canvas.classList.add('drawable');
-            image.src = 'cam.png';
+            const date = new Date()
+            image.src = 'cam.png?temp=' + date.getTime();
         }
         image.onload = function(){
             const context = canvas.getContext('2d');
@@ -106,9 +107,11 @@ function fetchImage(){
 
             const canvas = document.getElementById('canvas');
             const image = new Image();
-            image.src = 'cam.png';
+            const date = new Date()
+            image.src = 'cam.png?temp=' + date.getTime();
             image.onload = function(){
                 const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
                 context.imageSmoothingEnabled = false;
                 context.drawImage(image, 0, 0);
             }
@@ -131,7 +134,8 @@ function redrawFieldTemplate() {
     document.getElementById('sad-button-group').classList.remove('hidden');
     document.getElementById('happy-button-group').classList.add('hidden');
     canvas.classList.add('drawable');
-    image.src = 'cam.png';
+    const date = new Date()
+    image.src = 'cam.png?temp=' + date.getTime();
     image.onload = function(){
         const context = canvas.getContext('2d');
         context.imageSmoothingEnabled = false;
@@ -203,7 +207,8 @@ function run() {
         const direction = parseInt(data[0]);
 
         let message = "Robot is moving ";
-        image.src = 'cam.png';
+        const date = new Date()
+        image.src = 'cam.png?temp=' + date.getTime();
         switch (direction) {
             case -2:
                 message = "Please redraw the field template.";

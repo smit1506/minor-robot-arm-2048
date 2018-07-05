@@ -29,6 +29,7 @@ class positions:
 
     def store(self, name, x=None, y=None, z=None, rx=None, ry=None, rz=None):
         if x is None:
+            rob = urx.Robot("192.168.1.101")
             pos = rob.getl()
             self.store(name, pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
             return

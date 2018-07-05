@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 img_rgb = None
 img_gray = None
 tiles = None
-ip = "141.252.128.6"
+ip = "192.168.1.101"
 url = "http://" + ip + ":4242/current.jpg?type=color"
 cwd = os.getcwd()
 cwd = cwd if 'App' in cwd else os.path.join(cwd, 'App')
@@ -24,7 +24,7 @@ board = [0] * 16
 def init():
     global  img_rgb, img_gray, tiles
     # UNCOMMENT THIS WHEN ROBOT IS ON
-    #_ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
+    _ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     sleep(3)
     img_rgb = getCameraImage()
     tiles = os.listdir(tile_path)
@@ -52,8 +52,8 @@ def updateBoard():
 def getCameraImage():
     # return cv2.imread(path + 'cam.png')
     # UNCOMMENT THIS WHEN ROBOT IS ON
-    #_, image = cv2.VideoCapture(url).read()
-    image = cv2.imread(os.path.join(path, 'cam.png'))
+    _, image = cv2.VideoCapture(url).read()
+    #image = cv2.imread(os.path.join(path, 'cam.png'))
     cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'cam.png'),image)
     return image
 
