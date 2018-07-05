@@ -64,7 +64,7 @@ def doMove(direction):
     elif direction == 3:
         rob.movel(positions.get("down"), wait=False, vel=0.2, acc=0.5)
         print("Down!")
-    sleep(1)
+    sleep(0.5)
 
 def getDirection():
     global board
@@ -72,7 +72,7 @@ def getDirection():
     last_board = board
 
     rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
-    sleep(2)
+    sleep(3)
     board = vision.updateBoard()
     if board is None:
         return -2
