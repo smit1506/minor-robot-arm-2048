@@ -21,9 +21,10 @@ tile_info = [0] + [1 << i for i in range(1, 15)]
 grid = []
 board = [0] * 16
 
+#Initiates the vision class
 def init():
     global  img_rgb, img_gray, tiles
-    # UNCOMMENT THIS WHEN ROBOT IS ON
+
     _ = urllib2.urlopen("http://" + ip + ":4242/setdisplaysize?width=1280&height=720").read()
     sleep(3)
     img_rgb = getCameraImage()
@@ -35,28 +36,26 @@ def init():
     print "Found field"
     return True
 
+#Used to update the game board
+#It takes a new image from the camera and calls the getAllMatches() function
 def updateBoard():
     global img_rgb, img_gray
 
-    # UNCOMMENT THIS WHEN ACTUAL CAM IS CONNECTED
     sleep(3)
     img_rgb  = getCameraImage()
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    # cv2.imshow("board",img_gray)
-    # cv2.waitKey(0)
     if getAllMatches():
         return normalizeBoard(board)
     else:
         return None
 
+#Used to get an image from the camera
 def getCameraImage():
-    # return cv2.imread(path + 'cam.png')
-    # UNCOMMENT THIS WHEN ROBOT IS ON
     _, image = cv2.VideoCapture(url).read()
-    #image = cv2.imread(os.path.join(path, 'cam.png'))
     cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'cam.png'),image)
     return image
 
+#Used to pass tile templates to the getMatches method.
 def getAllMatches():
     templates = []
     index = 0
@@ -68,6 +67,9 @@ def getAllMatches():
         return False
     return True
 
+#used to get the value of each game tile based on the given templates and grid
+#Tiles will be calculated based on the grid's dimensions
+#Each tile is then checked for template matches, the best match for a tile is picked
 def getMatches(templates,grid):
     threshold = 0.1
     index = 0
@@ -93,18 +95,9 @@ def getMatches(templates,grid):
             cv2.rectangle(img_rgb,point[0],point[1],(255,0,0),2)
         index += 1
     return True
-# def getFieldTemplate(image):
-#     r = cv2.selectROI("Image",image,False,False)
-#     if (sum(r) == 0):
-#         print ("Nothing selected. Restart the script.")
-#         exit(0)
-#     img_crop = image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
-#     if (img_crop == []):
-#         print ("IMG CROP")
-#         print (img_crop)
-#     cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_crop)
-#     return img_crop
 
+#Used to create a field template based on coordinates from the web interfaceself
+#The field template will be cropped from the original image
 def getFieldTemplate(rct):
     print(rct)
     if (sum(rct) == 0):
@@ -114,6 +107,9 @@ def getFieldTemplate(rct):
     cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field_cropped.png'),img_crop)
     return getField(img_crop)
 
+
+#Used to find the playing field based on the field template
+#If a match above the threshold is found, a grid will be made based on the match coordinates
 def getField(field_template):
     if field_template is None:
         return False
@@ -127,11 +123,12 @@ def getField(field_template):
     if len(loc_list) == 0:
         print("No field template found. Select new template.")
         return False
-        #return getField(getFieldTemplate(img_gray))
+
     pt = loc_list[0]
 
     next_pt = pt
 
+    #creates a 4*4 grid based on points from the found playing field
     for y in range (1,5):
         for x in range (1,5):
             grid.append((pt, (pt[0] + block_width, pt[1] + (block_width))))
@@ -142,7 +139,8 @@ def getField(field_template):
     drawGrid(grid)
     return True
 
-
+#Draws a 4*4 grid
+#Used to verify the location of the grid
 def drawGrid(grid):
     for pt in grid:
         cv2.rectangle(img_rgb,pt[0], pt[1], (0,0,0), 2)
@@ -150,11 +148,9 @@ def drawGrid(grid):
     print (os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'))
     cv2.imwrite(os.path.join(template_path, 'template_field.png'), img_rgb)
     cv2.imwrite(os.path.join(path, os.pardir, os.pardir, os.pardir, 'interface', 'template_field.png'),img_rgb)
-    # cv2.imshow('drawGrid',img_rgb)
-    # if cv2.waitKey(30000) & 0xFF == ord('q'):
-    #     sleep(1)
 
 
+#Creates a 4*4 playing field
 def normalizeBoard(board):
     result = [[],[],[],[]]
     val = 0;
