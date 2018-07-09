@@ -13,23 +13,7 @@ import json
 from App import main
 
 class ProgramEntry:
-    # do on get
-    def do_something(self):
-        print('Something')
-        response = Response(200)
-        #response.add_header('Access-Control-Allow-Origin','*')
-        response.add_body(content_type['text'], 'Hello world')
-        response.add_header("Access-Control-Allow-Origin", "http://localhost:8000")
-        return response
-
-    # do on post
-    def do_something_with_data(self, data_type, data):
-        print(data_type)
-        print(data)
-        response = Response(200)
-        response.add_body(content_type['text'], 'Hello world')
-        return response
-
+    
     def calibrate(self, data_type, data):
         response = Response(200)
         main.calibrate(data)

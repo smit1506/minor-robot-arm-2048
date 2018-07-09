@@ -3,14 +3,21 @@ const templateFieldOptions = {};
 
 let stopped = false;
 
+// Calibrate button was pressed
 function calibrate(origin){
     remove(document.getElementById('firstButtons'));
+    // Open calibration menu
     document.getElementById('calibration-menu').classList.remove('hidden');
 }
+
+// Skip button was pressed
 function skipCalibration(origin) {
     remove(document.getElementById('firstButtons'));
+    // Go to start button
     document.getElementById('start-button').classList.remove('hidden');
 }
+
+// Position button with specific positon was pressed
 function setPosition(positionName){
     fetch('http://localhost:8080/calibrate', {
         method: 'POST',
@@ -20,7 +27,6 @@ function setPosition(positionName){
     }).then(function(data) {
 
         console.log(data);
-        // temp
         if (data == "1") {
             console.log("Success!");
         }
@@ -32,6 +38,7 @@ function setPosition(positionName){
     });
 }
 
+// Move robot to start position
 function moveToStart() {
     fetch('http://localhost:8080/move', {
         method: 'POST',
@@ -41,7 +48,6 @@ function moveToStart() {
     }).then(function(data) {
 
         console.log(data);
-        // temp
         if (data == "1") {
             console.log("Success!");
         }
@@ -57,6 +63,8 @@ function finishCalibration() {
     document.getElementById('calibration-menu').classList.add('hidden');
     document.getElementById('start-button').classList.remove('hidden');
 }
+
+// Start button was pressed
 function activate(origin) {
     remove(document.getElementById('init'));
     const canvas = document.getElementById('canvas');
@@ -64,6 +72,7 @@ function activate(origin) {
     const message = document.getElementById('message');
     message.classList.remove('hidden');
     message.innerHTML="Fetching image...";
+    // Run robot initialization
     fetch('http://localhost:8080/init').then(function(response) {
       return response.text();
     }).then(function(data) {
@@ -100,11 +109,8 @@ function fetchImage(){
     fetch('http://localhost:8080/image').then(function(response) {
         return response.text();
     }).then(function(data) {
-
         console.log(data);
-        // temp
         if (data == "1") {
-
             const canvas = document.getElementById('canvas');
             const image = new Image();
             const date = new Date()
@@ -154,7 +160,6 @@ function setFieldTemplate() {
     }).then(function(data) {
 
         console.log(data);
-        // temp
         if (data == "1") {
             console.log("Success!");
             remove(fieldTemplate);
@@ -163,24 +168,12 @@ function setFieldTemplate() {
         else {
             console.log("Reselect rectangle");
         }
-
-
-
-        // const context = canvas.getContext('2d');
-        // context.clearRect(0, 0, canvas.width, canvas.height);
-        // const image = new Image();
-        // if (data == "1") {
-        //     image.src = 'cam.png';
-        // }
-        // image.onload = function(){
-        //     context.imageSmoothingEnabled = false;
-        //     context.drawImage(image, 0, 0);
-        // }
     }).catch(function(error) {
       console.log(error)
     });
 }
 
+// Robot starts playing
 function start() {
     stopped = false;
     document.getElementById("happy-button-group").classList.add('hidden');
@@ -195,6 +188,7 @@ function start() {
     run();
 }
 
+// Robot keeps playing until it gets told not to
 function run() {
     fetch('http://localhost:8080/run').then(function(response) {
       return response.json();

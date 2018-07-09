@@ -5,51 +5,65 @@ from robot_controls import robot_positions
 from robot_vision import vision
 from robot_brain import weighted_table
 
+# Set current path
 path = '' if "App" in os.getcwd() else 'App'
 board = None
 rob = None
 positions = None
 direction = None
-def calibrate(position_name):
-    global positions
-    positions = robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
-    positions.store(position_name)
+
 
 def init():
     global positions, rob
+    # Connect to robot
     rob = urx.Robot("192.168.1.101")
-    #print("Connected")
 
-    sleep(0.2)  #leave some time to robot to process the setup commands
-    # don't assign same object to positions twice if already not None
+    #leave some time to robot to process the setup commands
+    sleep(0.2)
+
+    # don't assign positions in positions text file twice if already not None
     positions = positions or robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
+
+    #move robot to start position
     rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
-    #sleep(5)
+
+    # Run vision initialization when robot is on start position
     return vision.init()
 
-def run_standalone():
-    while (direction != -1):
-        #direction = getDirection()
-        #print(direction)
-        doMove(getDirection())
-    rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
+def calibrate(position_name):
+    global positions
 
-    # loop
-    doMove(getDirection())
-    # wait until robot has moved and repeat
+    positions = positions or robot_positions.positions(os.path.join(os.getcwd(), path, "robot_controls", "positions.txt"))
+
+    # Store current position with position_name in the text file
+    positions.store(position_name)
+
+
+
+# Just run, don't use interface
+def run_standalone():
+    # Do moves until no move is valid
+    while (direction != -1):
+        run()
+
+    # Then move to start positions
+    rob.movej(positions.get("start"), wait=True, vel=0.7, acc=1.1, pose=True)
 
     #done
     vision.releaseCamera()
 
 def run():
     global direction
+
+    # get next direction and do next move with the direction
     direction = getDirection()
     doMove(direction)
     return (direction, board)
 
+
+# Go to center of screen and do next move
 def doMove(direction):
 
-    #go to center of screen and do move
     rob.movel(positions.get("center"), wait=False, vel=0.2, acc=0.5)
     sleep(1)
     if direction == 0:
@@ -73,10 +87,13 @@ def getDirection():
 
     rob.movel(positions.get("start"), wait=False, vel=0.2, acc=0.5)
     sleep(3)
+    # Use vision to get the latest board
     board = vision.updateBoard()
     if board is None:
         return -2
     print(board)
+
+    # Use algorithm to get next move
     return weighted_table.getMove(board, 4)
 
 def goToStart():
